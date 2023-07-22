@@ -9,8 +9,11 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@chakra-ui/react": "^2.8.0",
     "@plasmicapp/loader-nextjs": "^1.0.300",
     "@plasmicpkgs/framer-motion": "^0.0.151",
+    "@plasmicpkgs/plasmic-chakra-ui": "^0.0.9",
+    "@popmotion/popcorn": "^0.4.4",
     "@types/node": "20.4.2",
     "@types/react": "18.2.15",
     "@types/react-dom": "18.2.7",

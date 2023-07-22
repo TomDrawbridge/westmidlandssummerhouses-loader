@@ -1,6 +1,7 @@
 /** @format */
 import { ScrollProvider } from "./components/ScrollContext";
-
+import { registerAll } from '@plasmicpkgs/plasmic-chakra-ui';
+import { ParallaxText } from "./components/ParallaxText";
 import { initPlasmicLoader } from "@plasmicapp/loader-nextjs";
 
 export const PLASMIC = initPlasmicLoader({
@@ -25,8 +26,23 @@ export const PLASMIC = initPlasmicLoader({
 // http://localhost:3000/plasmic-host).  See
 // https://docs.plasmic.app/learn/app-hosting/#set-a-plasmic-project-to-use-your-app-host
 
+// Register all components from plasmic-chakra-ui
+registerAll(PLASMIC);
+
 PLASMIC.registerGlobalContext(ScrollProvider, {
   name: "ScrollProvider",
   providesData: true,
   props: {},
+});
+
+PLASMIC.registerComponent(ParallaxText, {
+  name: "ParallaxText",
+  props: {
+    children: "slot",
+    from: "number",
+    to: "number",
+    stiffness: "number",
+    damping: "number",
+  },
+  providesData: true,
 });
