@@ -6,7 +6,7 @@ import {
   PlasmicRootProvider,
 } from "@plasmicapp/loader-nextjs";
 import type { GetStaticPaths, GetStaticProps } from "next";
-
+import { Analytics } from '@vercel/analytics/react';
 import Error from "next/error";
 import { useRouter } from "next/router";
 import { PLASMIC } from "@/plasmic-init";
@@ -30,6 +30,7 @@ export default function PlasmicLoaderPage(props: {
       pageQuery={router.query}
     >
       <PlasmicComponent component={pageMeta.displayName} />
+<Analytics />
     </PlasmicRootProvider>
   );
 }
