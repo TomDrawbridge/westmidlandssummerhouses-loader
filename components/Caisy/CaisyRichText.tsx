@@ -3,8 +3,13 @@ import { RichTextRenderer } from '@caisy/rich-text-react-renderer';
 import { Paragraph, Heading } from './Overrides/AllText';
 import DocumentLink from './Overrides/DocumentLink'; 
 
-const CaisyRichText = ({ node, themeResetClass }) => {
-  const [content, setContent] = useState(null); 
+interface CaisyRichTextProps {
+  node: any; // Replace 'any' with the appropriate type of the 'node' prop
+  themeResetClass: string; // Change 'string' to the appropriate type if needed
+}
+
+const CaisyRichText: React.FC<CaisyRichTextProps> = ({ node, themeResetClass }) => {
+  const [content, setContent] = useState(null);
 
   const overrides = {
     paragraph: Paragraph,
