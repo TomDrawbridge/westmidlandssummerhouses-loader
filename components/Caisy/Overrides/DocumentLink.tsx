@@ -1,7 +1,22 @@
-// DocumentLink.js
 import React from 'react';
 
-const DocumentLink = ({ node, connections }) => {
+interface DocumentLinkProps {
+  node: {
+    attrs: {
+      documentId: string;
+      src: string;
+      description?: string;
+      dominantColor: string;
+    };
+  };
+  connections?: Array<{
+    id: string;
+    src: string;
+    // Add more connection properties if needed
+  }>;
+}
+
+const DocumentLink: React.FC<DocumentLinkProps> = ({ node, connections }) => {
   if (!node || !connections) return null;
   
   const { documentId, src, description, dominantColor } = node.attrs;
@@ -22,6 +37,5 @@ const DocumentLink = ({ node, connections }) => {
     />
   );
 };
-
 
 export default DocumentLink;

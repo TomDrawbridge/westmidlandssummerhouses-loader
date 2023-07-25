@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { RichTextRenderer } from '@caisy/rich-text-react-renderer';
 import { Paragraph, Heading } from './Overrides/AllText';
 import DocumentLink from './Overrides/DocumentLink'; 
+import DocumentLinkProps from './Overrides/DocumentLink'; // Update the import path accordingly
 
 interface CaisyRichTextProps {
   node: any; // Replace 'any' with the appropriate type of the 'node' prop
