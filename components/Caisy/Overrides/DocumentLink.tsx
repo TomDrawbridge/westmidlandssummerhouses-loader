@@ -1,26 +1,29 @@
 import React from 'react';
 
-interface DocumentLinkProps {
+export interface DocumentLinkProps {
   node: {
     attrs: {
-      documentId: string;
-      src: string;
-      description?: string;
-      dominantColor: string;
-    };
-  };
-  connections?: Array<{
-    id: string;
-    src: string;
-    // Add more connection properties if needed
-  }>;
+      documentId: string,
+      src: string,
+      description?: string,
+      dominantColor?: string,
+      [key: string]: any,
+    },
+    [key: string]: any,
+  },
+  connections: Array<{
+    id: string,
+    src: string,
+    __typename: string,
+    [key: string]: any,
+  } | null>,
 }
 
 const DocumentLink: React.FC<DocumentLinkProps> = ({ node, connections }) => {
   if (!node || !connections) return null;
   
   const { documentId, src, description, dominantColor } = node.attrs;
-  const connection = connections.find((c) => c.id === documentId);
+  const connection = connections.find((c) => c && c.id === documentId);
   const imageSrc = connection?.src || src;
 
   return (
@@ -38,4 +41,4 @@ const DocumentLink: React.FC<DocumentLinkProps> = ({ node, connections }) => {
   );
 };
 
-export { DocumentLink, DocumentLinkProps };
+export default DocumentLink;

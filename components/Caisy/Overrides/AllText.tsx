@@ -1,22 +1,31 @@
-import React, { FC } from "react";
+import React, { FC, ReactNode } from "react";
 
-const Paragraph = ({
-  node,
-  children,
-classNameP
-}) => {
+interface ParagraphProps {
+  node: any;
+  children: ReactNode;
+}
+
+const Paragraph: FC<ParagraphProps> = ({ node, children }) => {
   // Customize the rendering of paragraphs here
-  return <p className={classNameP}>{children}</p>;
+  return <p>{children}</p>;
 };
 
-const Heading = ({ node, children, classNameH }) => {
+interface HeadingProps {
+  node: {
+    attrs?: {
+      level?: number;
+    }
+  };
+  children: ReactNode;
+}
+
+const Heading: FC<HeadingProps> = ({ node, children }) => {
   // Determine the heading level based on the `level` attribute
   const level = node.attrs?.level || 1;
-  const HeadingTag = `h${level}`;
+  const HeadingTag = `h${level}` as keyof JSX.IntrinsicElements;
 
   // Customize the rendering of headings here
-  return <HeadingTag className={`blog_h${level}`}>{children}</HeadingTag>;
+  return <HeadingTag>{children}</HeadingTag>;
 };
-
 
 export { Paragraph, Heading };

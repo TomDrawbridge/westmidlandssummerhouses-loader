@@ -54,7 +54,7 @@ PLASMIC.registerComponent(FeatherIcon, {
   name: "FeatherIcon",
   props: {
     name: 'string',
-    color: 'color',
+    color: 'string',  // use string type for color
     size: 'string',
     strokeWidth: 'number',
   },
@@ -67,9 +67,6 @@ PLASMIC.registerComponent(CaisyRichText, {
     themeResetClass: {
       type: 'themeResetClass',
       targetAllTags: true,
-      options: {
-        targetAllTags: true
-      }
     },
     documentId: 'string',
     src: 'string',
