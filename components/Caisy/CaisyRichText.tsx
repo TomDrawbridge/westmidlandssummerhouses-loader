@@ -14,7 +14,7 @@ const CaisyRichText: React.FC<CaisyRichTextProps> = ({ node, themeResetClass }) 
   const overrides = {
     paragraph: Paragraph,
     heading: Heading,
-    documentLink: (props) => <DocumentLink {...props} connections={node?.connections} />
+     documentLink: (props: DocumentLinkProps) => <DocumentLink {...props} connections={node?.connections} />
   };
 
   useEffect(() => {
