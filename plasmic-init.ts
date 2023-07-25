@@ -3,6 +3,7 @@ import { ScrollProvider } from "./components/ScrollContext";
 import { registerAll } from '@plasmicpkgs/plasmic-chakra-ui';
 import { ParallaxText } from "./components/ParallaxText";
 import { initPlasmicLoader } from "@plasmicapp/loader-nextjs";
+import { CaisyRichText } from "./components/Caisy/CaisyRichText";
 
 export const PLASMIC = initPlasmicLoader({
   projects: [
@@ -39,10 +40,40 @@ PLASMIC.registerComponent(ParallaxText, {
   name: "ParallaxText",
   props: {
     children: "slot",
-    from: "number",
+    from: "number", 
     to: "number",
     stiffness: "number",
     damping: "number",
   },
   providesData: true,
 });
+
+import FeatherIcon from "./components/FeatherIcon";
+
+PLASMIC.registerComponent(FeatherIcon, {
+  name: "FeatherIcon",
+  props: {
+    name: 'string',
+    color: 'color',
+    size: 'string',
+    strokeWidth: 'number',
+  },
+});
+
+PLASMIC.registerComponent(CaisyRichText, {
+  name: "CaisyRichText",
+  props: {
+    node: 'object',
+    themeResetClass: {
+      type: 'themeResetClass',
+      targetAllTags: true,
+      options: {
+        targetAllTags: true
+      }
+    },
+    documentId: 'string',
+    src: 'string',
+    height: 'number',
+  },
+});
+

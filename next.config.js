@@ -1,4 +1,4 @@
-
+require('dotenv').config()
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   // Turn off React StrictMode for now, as react-aria (used by Plasmic)
