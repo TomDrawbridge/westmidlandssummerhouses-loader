@@ -38,4 +38,4 @@ const DocumentLink: React.FC<DocumentLinkProps> = ({ node, connections }) => {
   );
 };
 
-export default DocumentLink;
+export { DocumentLink, DocumentLinkProps };

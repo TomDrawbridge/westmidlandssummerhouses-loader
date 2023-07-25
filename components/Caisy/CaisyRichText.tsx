@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { RichTextRenderer } from '@caisy/rich-text-react-renderer';
 import { Paragraph, Heading } from './Overrides/AllText';
-import DocumentLink from './Overrides/DocumentLink'; 
-import DocumentLinkProps from './Overrides/DocumentLink'; // Update the import path accordingly
+import { DocumentLink } from './Overrides/DocumentLink'; 
+import { DocumentLinkProps } from './Overrides/DocumentLink'; // Update the import path accordingly
 
 interface CaisyRichTextProps {
   node: any; // Replace 'any' with the appropriate type of the 'node' prop
@@ -15,7 +15,7 @@ const CaisyRichText: React.FC<CaisyRichTextProps> = ({ node, themeResetClass }) 
   const overrides = {
     paragraph: Paragraph,
     heading: Heading,
-     documentLink: (props: DocumentLinkProps) => <DocumentLink {...props} connections={node?.connections} />
+    documentLink: (props: DocumentLinkProps) => <DocumentLink {...props} connections={node?.connections} />
   };
 
   useEffect(() => {
