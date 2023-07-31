@@ -16,7 +16,7 @@ export function Parallax({
   className,  // Deconstruct className from your props
   from = 0, 
   to = 400, 
-  stiffness = 100, 
+  stiffness = 150, 
   damping = 30
 }: ParallaxProps) {
   const { scrollYProgress } = useViewportScroll();
