@@ -9,13 +9,19 @@ import { Parallax } from "./components/ParallaxText";
 import { initPlasmicLoader } from "@plasmicapp/loader-nextjs";
 import { CaisyRichText } from "./components/Caisy/CaisyRichText";
 
+// Ensure process.env.PLASMIC_ID is defined as a string or provide a default value
+const plasmicId: string = process.env.PLASMIC_ID!;
+// Ensure process.env.PLASMIC_TOKEN is defined as a string or provide a default value
+const plasmicToken: string = process.env.PLASMIC_TOKEN!;
+
 export const PLASMIC = initPlasmicLoader({
   projects: [
     {
-      id: process.env.PLASMIC_ID,
-      token: process.env.PLASMIC_TOKEN,
+      id: plasmicId,
+      token: plasmicToken,
     },
   ],
+
 
   // By default Plasmic will use the last published version of your project.
   // For development, you can set preview to true, which will use the unpublished
