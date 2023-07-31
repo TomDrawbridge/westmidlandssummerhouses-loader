@@ -20,8 +20,8 @@ export interface DocumentLinkProps {
 }
 
 const DocumentLink: React.FC<DocumentLinkProps> = ({ node, connections }) => {
-  if (!node || !connections) return null;
-  
+  if (!node || !connections || !node.attrs) return null;
+
   const { documentId, src, description, dominantColor } = node.attrs;
   const connection = connections.find((c) => c && c.id === documentId);
   const imageSrc = connection?.src || src;

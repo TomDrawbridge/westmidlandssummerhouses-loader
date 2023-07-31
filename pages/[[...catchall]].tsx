@@ -31,6 +31,7 @@ export default function PlasmicLoaderPage(props: {
     >
       <PlasmicComponent component={pageMeta.displayName} />
 <Analytics />
+
     </PlasmicRootProvider>
   );
 }

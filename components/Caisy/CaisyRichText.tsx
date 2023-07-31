@@ -1,82 +1,63 @@
-import React, { useEffect, useState, FC, ReactNode } from 'react';
+import React from 'react';
 import { RichTextRenderer } from '@caisy/rich-text-react-renderer';
-import { Paragraph, Heading } from './Overrides/AllText';
-import DocumentLink, { DocumentLinkProps } from './Overrides/DocumentLink';
 
-
-interface Node {
-  json: {
-    content: Array<{
-      type: string,
-      attrs: {
-        documentId: string,
-        [key: string]: any,
-      },
-      [key: string]: any,
-    }>,
-    [key: string]: any,
-  },
-  connections: Array<{
-    id: string,
-    src: string,
-    [key: string]: any,
-  }>,
-  [key: string]: any,
-}
-
-interface CaisyRichTextProps {
-  node: Node;
-  themeResetClass: string;
-}
-
-interface Content {
-  json: {
-    content: Array<{
-      type: string,
-      attrs: {
-        documentId: string,
-        [key: string]: any,
-      },
-      [key: string]: any,
-    }>,
-    [key: string]: any,
-  },
-  [key: string]: any,
-}
-
-
-const CaisyRichText: React.FC<CaisyRichTextProps> = ({ node, themeResetClass }) => {
-  const [content, setContent] = useState<Content | null>(null);
-
-const overrides = {
-  paragraph: ({ node, children }: { node: any, children?: ReactNode }) => <Paragraph node={node}>{children}</Paragraph>,
-  heading: ({ node, children }: { node: any, children?: ReactNode }) => <Heading node={node}>{children}</Heading>,
-  documentLink: (node: any) => <DocumentLink node={node} connections={node?.connections} />
-};
-
-
-
-  useEffect(() => {
-    if (node) {
-      const { json, connections } = node;
-      const updatedContent = json.content.map((item) => {
-        if (item.type === "documentLink") {
-          const documentLink = connections.find((c) => c.id === item.attrs.documentId);
-          if (documentLink) {
-            return { ...item, attrs: { ...item.attrs, src: documentLink.src, documentId: documentLink.id } };
-          }
-        }
-        return item;
-      });
-      setContent({ json: { ...json, content: updatedContent } });
-    }
-  }, [node]);
+// Asset Component
+export const Asset = ({ src, description }) => {
+  console.log("Rendering Asset", { src, description });  // Log the Asset props
 
   return (
-    <div className={themeResetClass}>
-      {content ? <RichTextRenderer node={content.json} overwrites={overrides} /> : 'Loading...'}
-    </div>
+    <>
+      {src ? (
+        <img
+          loading="lazy"
+          src={`${src}?w=1920&h=960`}
+          srcSet={`${src}?w=3840&h=1920 1920w, ${src}?w=1920&h=960 1280w, ${src}?w=1280&h=640 640w`}
+          alt={description ?? ""}
+        />
+      ) : (
+        console.log("Asset src not defined", { src, description })  // Log a message if src is not defined
+      )}
+    </>
+  );
+};
+// DocumentLink Component
+export const DocumentLink = ({ connections, node, children }) => {
+  console.log("Rendering DocumentLink", { connections, node });  // Log the DocumentLink props
+
+  return (
+    <>
+      {connections?.map(
+        (component) => {
+          console.log('node.attrs.documentId:', node?.attrs?.documentId);
+          console.log('component.id:', component.id);
+
+          const shouldRenderAsset = node?.attrs?.documentId == component.id;
+          console.log('shouldRenderAsset:', shouldRenderAsset);
+
+          return shouldRenderAsset && <Asset key={component.id} {...component} />;
+        }
+      )}
+      {children}
+    </>
   );
 };
 
-export { CaisyRichText };
+// Main Component
+export const CaisyRichText = ({className, themeResetClass, node, connections}) => {
+  console.log("Rendering CaisyRichText", { node, connections });  // Log the CaisyRichText props
+
+  return (
+<div className={`${themeResetClass} ${className}`}>   
+<RichTextRenderer
+      node={node?.json}
+      overwrites={{
+        documentLink: (props) =>
+          props?.node && connections ? (
+            <DocumentLink node={props.node} connections={connections} />
+          ) : null,
+      }}
+    />
+</div>
+  );
+};
+

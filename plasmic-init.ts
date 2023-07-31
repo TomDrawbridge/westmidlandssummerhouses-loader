@@ -1,15 +1,19 @@
 /** @format */
+
+import 'dotenv/config'
+require('dotenv').config()
+
 import { ScrollProvider } from "./components/ScrollContext";
 import { registerAll } from '@plasmicpkgs/plasmic-chakra-ui';
-import { ParallaxText } from "./components/ParallaxText";
+import { Parallax } from "./components/ParallaxText";
 import { initPlasmicLoader } from "@plasmicapp/loader-nextjs";
 import { CaisyRichText } from "./components/Caisy/CaisyRichText";
 
 export const PLASMIC = initPlasmicLoader({
   projects: [
     {
-      id: "vNPK12bNdeKVkTRg7i686D",
-      token: "R4aDiK1PFGEn53gDYEzT0RUiKjSTXb6zLBAy9l6AgEmF3mJFVYsTuxpOMElf4azbIa2Ka6RPSWjdZICcgOA",
+      id: process.env.PLASMIC_ID,
+      token: process.env.PLASMIC_TOKEN,
     },
   ],
 
@@ -36,10 +40,11 @@ PLASMIC.registerGlobalContext(ScrollProvider, {
   props: {},
 });
 
-PLASMIC.registerComponent(ParallaxText, {
-  name: "ParallaxText",
+PLASMIC.registerComponent(Parallax, {
+  name: "Parallax",
   props: {
     children: "slot",
+className: 'string',
     from: "number", 
     to: "number",
     stiffness: "number",
@@ -64,13 +69,11 @@ PLASMIC.registerComponent(CaisyRichText, {
   name: "CaisyRichText",
   props: {
     node: 'object',
+className: 'string',
+    connections: 'object', // This should allow you to set connections from Plasmic
     themeResetClass: {
       type: 'themeResetClass',
       targetAllTags: true,
     },
-    documentId: 'string',
-    src: 'string',
-    height: 'number',
   },
 });
-
