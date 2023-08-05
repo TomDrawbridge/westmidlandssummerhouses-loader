@@ -9,16 +9,16 @@ import { Parallax } from "./components/ParallaxText";
 import { initPlasmicLoader } from "@plasmicapp/loader-nextjs";
 import { CaisyRichText } from "./components/Caisy/CaisyRichText";
 
-// Ensure process.env.PLASMIC_ID is defined as a string or provide a default value
-const plasmicId: string = process.env.PLASMIC_ID!;
-// Ensure process.env.PLASMIC_TOKEN is defined as a string or provide a default value
-const plasmicToken: string = process.env.PLASMIC_TOKEN!;
 
 export const PLASMIC = initPlasmicLoader({
   projects: [
     {
-      id: plasmicId,
-      token: plasmicToken,
+      id: process.env.PLASMIC_ID_1HIRE,
+      token: process.env.PLASMIC_TOKEN,
+    },
+    {
+      id: process.env.PLASMIC_ID_C2D,
+      token: process.env.PLASMIC_TOKEN_C2D,
     },
   ],
 
