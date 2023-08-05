@@ -13,8 +13,8 @@ import { CaisyRichText } from "./components/Caisy/CaisyRichText";
 export const PLASMIC = initPlasmicLoader({
   projects: [
     {
-      id: process.env.NEXT_PUBLIC_PLASMIC_ID,
-      token: process.env.NEXT_PUBLIC_PLASMIC_TOKEN,
+      id: process.env.NEXT_PUBLIC_PLASMIC_ID!,
+      token: process.env.NEXT_PUBLIC_PLASMIC_TOKEN!,
     },
   ],
 
