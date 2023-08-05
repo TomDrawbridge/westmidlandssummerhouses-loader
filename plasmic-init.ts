@@ -16,10 +16,6 @@ export const PLASMIC = initPlasmicLoader({
       id: process.env.PLASMIC_ID_1HIRE!,
       token: process.env.PLASMIC_TOKEN!,
     },
-    {
-      id: process.env.PLASMIC_ID_C2D,
-      token: process.env.PLASMIC_TOKEN_C2D,
-    },
   ],
 
 
