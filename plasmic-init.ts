@@ -1,7 +1,7 @@
 /** @format */
 
 import 'dotenv/config'
-require('dotenv').config()
+require('dotenv').config() 
 
 import { ScrollProvider } from "./components/ScrollContext";
 import { registerAll } from '@plasmicpkgs/plasmic-chakra-ui';
