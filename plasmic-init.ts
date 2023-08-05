@@ -9,7 +9,7 @@ import { Parallax } from "./components/ParallaxText";
 import { initPlasmicLoader } from "@plasmicapp/loader-nextjs";
 import { CaisyRichText } from "./components/Caisy/CaisyRichText";
 
-
+ 
 export const PLASMIC = initPlasmicLoader({
   projects: [
     {
