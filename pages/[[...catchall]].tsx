@@ -11,6 +11,28 @@ import Error from "next/error";
 import { useRouter } from "next/router";
 import { PLASMIC } from "@/plasmic-init";
 
+export const getStaticPaths: GetStaticPaths = async () => {
+  const pages = await PLASMIC.fetchPages();
+
+  // Manually adding paths for testing
+  const manualPaths = [
+    { params: { catchall: ['services', 'fencing', 'heras-fencing'] } },
+    { params: { catchall: ['services', 'generators', '10kva-generator'] } },
+    // Add more paths as needed
+  ];
+
+  return {
+    paths: [
+      ...pages.map((page) => ({
+        params: { catchall: page.path.substring(1).split('/') }
+      })),
+      ...manualPaths,
+    ],
+    fallback: 'blocking'
+  };
+};
+
+
 export default function PlasmicLoaderPage(props: {
   plasmicData?: ComponentRenderData;
   queryCache?: Record<string, any>;
@@ -60,22 +82,13 @@ export const getStaticProps: GetStaticProps = async (context) => {
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const pages = await PLASMIC.fetchPages();
-
-  // Manually adding paths for testing
-  const manualPaths = [
-    { params: { category: 'fencing', slug: 'heras-fencing' } },
-    { params: { category: 'generators', slug: '10kva-generator' } },
-    // Add more paths as needed
-  ];
-
+  const pageModules = await PLASMIC.fetchPages();
   return {
-    paths: [
-      ...pages.map((page) => ({
-        params: { catchall: page.path.substring(1).split('/') }
-      })),
-      ...manualPaths,
-    ],
+    paths: pageModules.map((mod) => ({
+      params: {
+        catchall: mod.path.substring(1).split("/"),
+      },
+    })),
     fallback: "blocking",
   };
-};
+}
