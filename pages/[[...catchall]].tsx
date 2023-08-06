@@ -80,15 +80,3 @@ export const getStaticProps: GetStaticProps = async (context) => {
   // Use revalidate if you want incremental static regeneration
   return { props: { plasmicData, queryCache }};
 }
-
-export const getStaticPaths: GetStaticPaths = async () => {
-  const pageModules = await PLASMIC.fetchPages();
-  return {
-    paths: pageModules.map((mod) => ({
-      params: {
-        catchall: mod.path.substring(1).split("/"),
-      },
-    })),
-    fallback: "blocking",
-  };
-}
