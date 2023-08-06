@@ -60,13 +60,22 @@ export const getStaticProps: GetStaticProps = async (context) => {
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const pageModules = await PLASMIC.fetchPages();
+  const pages = await PLASMIC.fetchPages();
+
+  // Manually adding paths for testing
+  const manualPaths = [
+    { params: { category: 'fencing', slug: 'heras-fencing' } },
+    { params: { category: 'generators', slug: '10kva-generator' } },
+    // Add more paths as needed
+  ];
+
   return {
-    paths: pageModules.map((mod) => ({
-      params: {
-        catchall: mod.path.substring(1).split("/"),
-      },
-    })),
+    paths: [
+      ...pages.map((page) => ({
+        params: { catchall: page.path.substring(1).split('/') }
+      })),
+      ...manualPaths,
+    ],
     fallback: "blocking",
   };
-}
+};

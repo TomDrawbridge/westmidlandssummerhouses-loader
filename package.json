@@ -11,6 +11,7 @@
   "dependencies": {
     "@caisy/rich-text-react-renderer": "^0.7.3",
     "@chakra-ui/react": "^2.8.0",
+    "@formspark/use-formspark": "^0.1.39",
     "@plasmicapp/loader-nextjs": "^1.0.300",
     "@plasmicpkgs/framer-motion": "^0.0.151",
     "@plasmicpkgs/plasmic-chakra-ui": "^0.0.9",
