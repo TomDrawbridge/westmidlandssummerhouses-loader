@@ -1,10 +1,16 @@
+// utils/fetchDynamicPaths.js
+
 const { request, gql } = require('graphql-request');
 
-async function fetchDynamicPaths() {
-    const ENDPOINT = 'https://cloud.caisy.io/api/v3/e/856911e2-e7e3-4a7a-bd7a-274d7ab2a6ae/graphql';
+const ENDPOINT = 'https://cloud.caisy.io/api/v3/e/856911e2-e7e3-4a7a-bd7a-274d7ab2a6ae/graphql';
+const headers = {
+    "x-caisy-apikey": "flCSpcFI7TMgpIWOxHkIVbunAPi4UwUm"
+};
 
-    const GET_ALL_SERVICES = gql`
-    query MyQuery {
+async function fetchDynamicPaths() {
+    // Fetch service data
+    const SERVICE_QUERY = gql`
+    query {
       allService {
         edges {
           node {
@@ -18,8 +24,15 @@ async function fetchDynamicPaths() {
     }
   `;
 
-    const GET_ALL_CATEGORIES = gql`
-    query MyQuery {
+    const serviceData = await request(ENDPOINT, SERVICE_QUERY, undefined, headers);
+
+    const servicePaths = serviceData.allService.edges.map((edge) => {
+        return `/services/${edge.node.servicecategory.slug}/${edge.node.pageSlug}`;
+    });
+
+    // Fetch category data
+    const CATEGORY_QUERY = gql`
+    query {
       allProductServiceCategory {
         edges {
           node {
@@ -30,26 +43,13 @@ async function fetchDynamicPaths() {
     }
   `;
 
-    const headers = {
-        "x-caisy-apikey": "flCSpcFI7TMgpIWOxHkIVbunAPi4UwUm"
-    };
+    const categoryData = await request(ENDPOINT, CATEGORY_QUERY, undefined, headers);
 
-    const serviceData = await request(ENDPOINT, GET_ALL_SERVICES, undefined, headers);
-    const categoryData = await request(ENDPOINT, GET_ALL_CATEGORIES, undefined, headers);
-
-    const servicePaths = serviceData.allService.edges.map(edge => `/services/${edge.node.servicecategory.slug}/${edge.node.pageSlug}`);
-    const categoryPaths = categoryData.allProductServiceCategory.edges.map(edge => `/services/${edge.node.categoryName}`);
+    const categoryPaths = categoryData.allProductServiceCategory.edges.map((edge) => {
+        return `/services/${edge.node.categoryName}`;
+    });
 
     return [...servicePaths, ...categoryPaths];
 }
 
-module.exports = async () => {
-    const dynamicPaths = await fetchDynamicPaths();
-
-    return {
-        siteUrl: process.env.SITE_URL || 'https://www.1hire.co.uk',
-        generateRobotsTxt: true,
-        extraPaths: dynamicPaths,
-        // ...other options
-    };
-};
+module.exports = fetchDynamicPaths;
