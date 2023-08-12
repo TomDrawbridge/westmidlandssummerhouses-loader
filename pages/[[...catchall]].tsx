@@ -10,6 +10,7 @@ import { Analytics } from '@vercel/analytics/react';
 import Error from "next/error";
 import { useRouter } from "next/router";
 import { PLASMIC } from "@/plasmic-init";
+import { request, gql } from 'graphql-request';
 
 export default function PlasmicLoaderPage(props: {
   plasmicData?: ComponentRenderData;
@@ -59,22 +60,63 @@ export const getStaticProps: GetStaticProps = async (context) => {
   return { props: { plasmicData, queryCache }, revalidate: 60 };
 }
 
+type ServiceNode = {
+  pageSlug: string;
+  servicecategory: {
+    slug: string;
+  };
+};
+
+type ServiceData = {
+  allService: {
+    edges: {
+      node: ServiceNode;
+    }[];
+  };
+};
+
+
 export const getStaticPaths: GetStaticPaths = async () => {
   const pages = await PLASMIC.fetchPages();
 
-  // Manually adding paths for testing
-  const manualPaths = [
-    { params: { catchall: ['services', 'fencing', 'heras-fencing'] } },
-    { params: { catchall: ['services', 'generators', '10kva-generator'] } },
-    // Add more paths as needed
-  ];
+  const ENDPOINT = 'https://cloud.caisy.io/api/v3/e/856911e2-e7e3-4a7a-bd7a-274d7ab2a6ae/graphql';
+
+  const GET_ALL_PATHS = gql`
+    query MyQuery {
+      allService {
+        edges {
+          node {
+            pageSlug
+            servicecategory {
+              slug
+            }
+          }
+        }
+      }
+    }
+  `;
+
+  const headers = {
+    "x-caisy-apikey": "flCSpcFI7TMgpIWOxHkIVbunAPi4UwUm"
+  };
+
+  const data = await request(ENDPOINT, GET_ALL_PATHS, undefined, headers) as ServiceData;
+
+
+  const graphqlPaths = data.allService.edges.map((edge) => {
+    return {
+      params: {
+        catchall: ['services', edge.node.servicecategory.slug, edge.node.pageSlug]
+      }
+    };
+  });
 
   return {
     paths: [
       ...pages.map((page) => ({
         params: { catchall: page.path.substring(1).split('/') }
       })),
-      ...manualPaths,
+      ...graphqlPaths,
     ],
     fallback: 'blocking'
   };
