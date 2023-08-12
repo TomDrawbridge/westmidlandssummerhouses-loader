@@ -29,9 +29,10 @@ export default function PlasmicLoaderPage(props: {
       prefetchedQueryData={queryCache}
       pageParams={pageMeta.params}
       pageQuery={router.query}
-    >
+      >
+          <Analytics />
       <PlasmicComponent component={pageMeta.displayName} />
-<Analytics />
+          
 
     </PlasmicRootProvider>
   );
