@@ -36,7 +36,7 @@ async function fetchDynamicPaths() {
       allProductServiceCategory {
         edges {
           node {
-            categoryName
+            slug
           }
         }
       }
@@ -46,7 +46,7 @@ async function fetchDynamicPaths() {
     const categoryData = await request(ENDPOINT, CATEGORY_QUERY, undefined, headers);
 
     const categoryPaths = categoryData.allProductServiceCategory.edges.map((edge) => {
-        return `/services/${edge.node.categoryName}`;
+        return `/services/${edge.node.slug}`;
     });
 
     return [...servicePaths, ...categoryPaths];
