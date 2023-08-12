@@ -60,64 +60,14 @@ export const getStaticProps: GetStaticProps = async (context) => {
   return { props: { plasmicData, queryCache }, revalidate: 60 };
 }
 
-type ServiceNode = {
-  pageSlug: string;
-  servicecategory: {
-    slug: string;
-  };
-};
-
-type ServiceData = {
-  allService: {
-    edges: {
-      node: ServiceNode;
-    }[];
-  };
-};
-
-
 export const getStaticPaths: GetStaticPaths = async () => {
-  const pages = await PLASMIC.fetchPages();
-
-  const ENDPOINT = 'https://cloud.caisy.io/api/v3/e/856911e2-e7e3-4a7a-bd7a-274d7ab2a6ae/graphql';
-
-  const GET_ALL_PATHS = gql`
-    query MyQuery {
-      allService {
-        edges {
-          node {
-            pageSlug
-            servicecategory {
-              slug
-            }
-          }
-        }
-      }
-    }
-  `;
-
-  const headers = {
-    "x-caisy-apikey": "flCSpcFI7TMgpIWOxHkIVbunAPi4UwUm"
-  };
-
-  const data = await request(ENDPOINT, GET_ALL_PATHS, undefined, headers) as ServiceData;
-
-
-  const graphqlPaths = data.allService.edges.map((edge) => {
-    return {
-      params: {
-        catchall: ['services', edge.node.servicecategory.slug, edge.node.pageSlug]
-      }
-    };
-  });
-
+  const pageModules = await PLASMIC.fetchPages();
   return {
-    paths: [
-      ...pages.map((page) => ({
-        params: { catchall: page.path.substring(1).split('/') }
-      })),
-      ...graphqlPaths,
-    ],
-    fallback: 'blocking'
+    paths: pageModules.map((mod) => ({
+      params: {
+        catchall: mod.path.substring(1).split("/"),
+      },
+    })),
+    fallback: "blocking",
   };
-};
+}
