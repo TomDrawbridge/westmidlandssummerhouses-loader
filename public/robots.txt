@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://www.1hire.co.uk
+
+# Sitemaps
+Sitemap: https://www.1hire.co.uk/sitemap.xml
