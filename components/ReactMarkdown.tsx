@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactMarkdown from 'react-markdown';
 
-const MyReactMarkdown = ({ source }) => {
-  return <ReactMarkdown children={source} />;
+const ReactMarkdownComponent = ({ source }) => {
+  return <ReactMarkdown>{source}</ReactMarkdown> ;
 };
 
 export default ReactMarkdownComponent;
