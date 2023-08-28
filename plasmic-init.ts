@@ -81,3 +81,14 @@ className: 'string',
     },
   },
 });
+
+import ReactMarkdown from 'react-markdown';
+
+PlasmicComponent.registerComponent(ReactMarkdown, {
+  name: "ReactMarkdown",
+  props: {
+    children: {
+      type: "slot",
+    },
+  },
+});
