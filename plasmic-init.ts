@@ -82,9 +82,9 @@ className: 'string',
   },
 });
 
-import ReactMarkdown from 'react-markdown';
+import ReactMarkdown from "./components/ReactMarkdownComponent";
 
-PLASMIC.registerComponent(ReactMarkdown, {
+PLASMIC.registerComponent(ReactMarkdownComponent, {
   name: "ReactMarkdown",
   props: {
     children: {
