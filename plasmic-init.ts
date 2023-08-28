@@ -84,7 +84,7 @@ className: 'string',
 
 import ReactMarkdown from 'react-markdown';
 
-PlasmicComponent.registerComponent(ReactMarkdown, {
+PLASMIC.registerComponent(ReactMarkdown, {
   name: "ReactMarkdown",
   props: {
     children: {
