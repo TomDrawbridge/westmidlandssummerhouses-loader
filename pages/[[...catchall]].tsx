@@ -31,6 +31,9 @@ export default function PlasmicLoaderPage(props: {
       pageQuery={router.query}
       >
           <Analytics />
+<Head>
+          <link rel="icon" href={`/icons/${process.env.NEXT_PUBLIC_FAVICON}`} />
+        </Head>
       <PlasmicComponent component={pageMeta.displayName} />
           
 
