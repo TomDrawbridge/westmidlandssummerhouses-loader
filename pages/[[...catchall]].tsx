@@ -11,6 +11,7 @@ import Error from "next/error";
 import { useRouter } from "next/router";
 import { PLASMIC } from "@/plasmic-init";
 import { request, gql } from 'graphql-request';
+import { Head } from 'next/document'
 
 export default function PlasmicLoaderPage(props: {
   plasmicData?: ComponentRenderData;
