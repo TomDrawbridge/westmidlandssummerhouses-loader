@@ -87,9 +87,6 @@ import ReactMarkdown from "./components/ReactMarkdownComponent";
 PLASMIC.registerComponent(ReactMarkdownComponent, {
   name: "ReactMarkdown",
   props: {
-    source: {
-      type: "string",
-    },
     children: {
       type: "slot",
     },
