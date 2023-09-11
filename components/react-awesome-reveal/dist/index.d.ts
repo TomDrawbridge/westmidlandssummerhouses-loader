@@ -16,6 +16,7 @@ declare type Effect = keyof typeof effectNameToComponent;
 export interface RevealProps extends React.ComponentProps<typeof Fade> {
     className?: string;
     effect?: Effect;
+ distance?: number;  // or number, based on your choice
     children?: React.ReactNode;
 }
 export declare function Reveal({ effect, className, ...props }: RevealProps): JSX.Element;
