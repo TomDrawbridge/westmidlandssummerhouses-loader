@@ -42,7 +42,7 @@ export const PLASMIC = initPlasmicLoader({
 // Register all components from plasmic-chakra-ui
 registerAll(PLASMIC);
 
-AnimatedLetters(PLASMIC);
+registerAnimatedLetters(PLASMIC);
 registerReveal(PLASMIC)
 
 
