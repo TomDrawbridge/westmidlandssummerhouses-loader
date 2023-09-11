@@ -8,8 +8,7 @@ import { registerAll } from '@plasmicpkgs/plasmic-chakra-ui';
 import { Parallax } from "./components/ParallaxText";
 import { initPlasmicLoader } from "@plasmicapp/loader-nextjs";
 import { CaisyRichText } from "./components/Caisy/CaisyRichText";
-import { registerAnimatedLetters } from "@plasmicpkgs/framer-motion";
-import { registerReveal	 } from "@plasmicpkgs/react-awesome-reveal";
+import { registerReveal	 } from "./components/react-awesome-reveal";
 
 
 
@@ -42,7 +41,6 @@ export const PLASMIC = initPlasmicLoader({
 // Register all components from plasmic-chakra-ui
 registerAll(PLASMIC);
 
-registerAnimatedLetters(PLASMIC);
 registerReveal(PLASMIC)
 
 
