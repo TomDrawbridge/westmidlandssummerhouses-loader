@@ -8,7 +8,7 @@ import { registerAll } from '@plasmicpkgs/plasmic-chakra-ui';
 import { Parallax } from "./components/ParallaxText";
 import { initPlasmicLoader } from "@plasmicapp/loader-nextjs";
 import { CaisyRichText } from "./components/Caisy/CaisyRichText";
-import { AnimatedLetters } from "@plasmicpkgs/framer-motion";
+import { registerAnimatedLetters } from "@plasmicpkgs/framer-motion";
 import { registerReveal	 } from "@plasmicpkgs/react-awesome-reveal";
 
 
