@@ -8,6 +8,10 @@ import { registerAll } from '@plasmicpkgs/plasmic-chakra-ui';
 import { Parallax } from "./components/ParallaxText";
 import { initPlasmicLoader } from "@plasmicapp/loader-nextjs";
 import { CaisyRichText } from "./components/Caisy/CaisyRichText";
+import { AnimatedLetters } from "@plasmicpkgs/framer-motion";
+import { registerReveal	 } from "@plasmicpkgs/react-awesome-reveal";
+
+
 
 const isDevelopment = process.env.NODE_ENV === 'development';
 console.log("Plasmic preview mode:", isDevelopment);
@@ -37,6 +41,10 @@ export const PLASMIC = initPlasmicLoader({
 
 // Register all components from plasmic-chakra-ui
 registerAll(PLASMIC);
+
+AnimatedLetters(PLASMIC);
+registerReveal(PLASMIC)
+
 
 PLASMIC.registerGlobalContext(ScrollProvider, {
   name: "ScrollProvider",

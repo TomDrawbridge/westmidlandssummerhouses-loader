@@ -16,6 +16,7 @@
     "@plasmicapp/loader-nextjs": "^1.0.305",
     "@plasmicpkgs/framer-motion": "^0.0.151",
     "@plasmicpkgs/plasmic-chakra-ui": "^0.0.9",
+    "@plasmicpkgs/react-awesome-reveal": "^3.8.162",
     "@popmotion/popcorn": "^0.4.4",
     "@types/node": "20.4.2",
     "@types/react": "18.2.15",
