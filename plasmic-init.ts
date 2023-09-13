@@ -9,6 +9,8 @@ import { Parallax } from "./components/ParallaxText";
 import { initPlasmicLoader } from "@plasmicapp/loader-nextjs";
 import { CaisyRichText } from "./components/Caisy/CaisyRichText";
 import { registerReveal	 } from "./components/react-awesome-reveal";
+import { registerAnimatedLetters } from "./components/framer-motion";
+
 
 
 

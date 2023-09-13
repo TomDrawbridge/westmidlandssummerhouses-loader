@@ -13,6 +13,7 @@ import { PLASMIC } from "@/plasmic-init";
 import { request, gql } from 'graphql-request';
 import Head from 'next/head'
 
+
 export default function PlasmicLoaderPage(props: {
   plasmicData?: ComponentRenderData;
   queryCache?: Record<string, any>;
@@ -31,6 +32,7 @@ export default function PlasmicLoaderPage(props: {
       pageParams={pageMeta.params}
       pageQuery={router.query}
       >
+
           <Analytics />
 <Head>
           <link rel="icon" href={`/icons/${process.env.NEXT_PUBLIC_FAVICON}`} />
