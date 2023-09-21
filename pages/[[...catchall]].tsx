@@ -38,12 +38,6 @@ export default function PlasmicLoaderPage(props: {
             <link rel="icon" href={`/icons/${process.env.NEXT_PUBLIC_FAVICON}`} />
             
             {/* Adding the script here */}
-            <script 
-  type="text/javascript" 
-  charSet="UTF-8" 
-  src={process.env.NEXT_PUBLIC_COOKIE_SCRIPT_URL}
-  defer>
-</script>
           </Head>
       <PlasmicComponent component={pageMeta.displayName} />
           
