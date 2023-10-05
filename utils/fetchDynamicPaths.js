@@ -73,7 +73,7 @@ async function fetchDynamicPaths_WMSH() {
         for (const serviceId of servicesIds) {
             const serviceResponse = await axios.get(`${ENDPOINT}/items/Services/${serviceId}`, { headers });
             const slug = serviceResponse.data.data.slug;
-            servicePaths.push(`/categories/${slug}`);
+            servicePaths.push(`/garden-buildings/${slug}`);
         }
 
         // Fetch case studies ID list and generate paths
