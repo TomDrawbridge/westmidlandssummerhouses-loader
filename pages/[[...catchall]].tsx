@@ -13,6 +13,11 @@ import { PLASMIC } from "@/plasmic-init";
 import { request, gql } from 'graphql-request';
 import Head from 'next/head'
 
+const allFetchDynamicPaths = require('../utils/fetchDynamicPaths');
+
+const { DYNAMIC_PATHS_SOURCE = 'default' } = process.env;
+
+const fetchDynamicPaths = allFetchDynamicPaths[`fetchDynamicPaths_${DYNAMIC_PATHS_SOURCE}`] || allFetchDynamicPaths.fetchDynamicPaths_default;
 
 export default function PlasmicLoaderPage(props: {
   plasmicData?: ComponentRenderData;
@@ -70,13 +75,24 @@ export const getStaticProps: GetStaticProps = async (context) => {
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
+  const dynamicPaths = await fetchDynamicPaths(); // This will now use the function specified by the env variable
   const pageModules = await PLASMIC.fetchPages();
-  return {
-    paths: pageModules.map((mod) => ({
+
+  const paths = [
+    ...pageModules.map((mod) => ({
       params: {
         catchall: mod.path.substring(1).split("/"),
       },
     })),
+...dynamicPaths.map((path: string) => ({
+  params: {
+    catchall: path.substring(1).split("/"),
+  },
+})),
+  ];
+
+  return {
+    paths,
     fallback: "blocking",
   };
-}
+};
