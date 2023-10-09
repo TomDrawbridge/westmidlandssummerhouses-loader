@@ -9,7 +9,7 @@ import { Parallax } from "./components/ParallaxText";
 import { initPlasmicLoader } from "@plasmicapp/loader-nextjs";
 import { CaisyRichText } from "./components/Caisy/CaisyRichText";
 import { registerReveal	 } from "./components/react-awesome-reveal";
-import { registerSlider } from "@plasmicpkgs/plasmic-keen-slider";
+import { registerSlider } from "./components/plasmic-keen-slider";
 
 const isDevelopment = process.env.NODE_ENV === 'development';
 console.log("Plasmic preview mode:", isDevelopment);
