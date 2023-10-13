@@ -75,21 +75,32 @@ export const getStaticProps: GetStaticProps = async (context) => {
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const dynamicPaths = await fetchDynamicPaths(); // This will now use the function specified by the env variable
+  let dynamicPaths = [];
+
+  // Check if fetchDynamicPaths is a function before calling it
+  if (typeof fetchDynamicPaths === 'function') {
+    dynamicPaths = await fetchDynamicPaths();
+  }
+
   const pageModules = await PLASMIC.fetchPages();
 
-  const paths = [
-    ...pageModules.map((mod) => ({
-      params: {
-        catchall: mod.path.substring(1).split("/"),
-      },
-    })),
-...dynamicPaths.map((path: string) => ({
-  params: {
-    catchall: path.substring(1).split("/"),
-  },
-})),
-  ];
+  // Start with the static paths from Plasmic
+  const paths = pageModules.map((mod) => ({
+    params: {
+      catchall: mod.path.substring(1).split("/"),
+    },
+  }));
+
+  // Only add dynamic paths if they exist
+  if (dynamicPaths && dynamicPaths.length > 0) {
+    paths.push(
+      ...dynamicPaths.map((path: string) => ({
+        params: {
+          catchall: path.substring(1).split("/"),
+        },
+      }))
+    );
+  }
 
   return {
     paths,
