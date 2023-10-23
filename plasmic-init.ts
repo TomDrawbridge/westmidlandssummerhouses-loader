@@ -11,6 +11,8 @@ import { CaisyRichText } from "./components/Caisy/CaisyRichText";
 import { registerReveal	 } from "./components/react-awesome-reveal";
 import { registerSlider } from "./components/plasmic-keen-slider";
 
+
+
 const isDevelopment = process.env.NODE_ENV === 'development';
 console.log("Plasmic preview mode:", isDevelopment);
 
@@ -86,6 +88,7 @@ className: 'string',
     },
   },
 });
+
 
 import ReactMarkdownComponent from "./components/ReactMarkdown";
 
