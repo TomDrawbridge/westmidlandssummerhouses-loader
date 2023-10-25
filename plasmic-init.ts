@@ -107,8 +107,13 @@ PLASMIC.registerComponent(CustomHead, {
   name: "Head Inject",
   props: {
     mycodehere: {
+displayName: "Other Code",
       type: "code",
       lang: "html",
+    },
+    measurementId: {
+displayName: "Google Analytics ID",
+      type: "string",
     },
   },
 });
