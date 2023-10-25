@@ -98,3 +98,33 @@ PLASMIC.registerComponent(ReactMarkdownComponent, {
   },
 });
 
+import CustomHead from './components/CustomHead';
+
+PLASMIC.registerComponent(CustomHead, {
+  name: "Head Inject",
+  props: {
+    mycodehere: {
+      type: "code",
+      lang: "html",
+    },
+  },
+});
+
+import FramerMotionComponent from './components/FramerMotionComponent';
+
+PLASMIC.registerComponent(FramerMotionComponent, {
+  name: "Framer Motion",
+  isAttachment: true,
+  props: {
+    children: 'slot',
+    transition: {
+      type: "object",
+      defaultValue: { duration: 1 },
+      control: {
+        type: "slider",
+        min: 0,
+        max: 5
+      }
+    }
+  },
+});
