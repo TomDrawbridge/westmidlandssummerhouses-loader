@@ -12,6 +12,7 @@ import { useRouter } from "next/router";
 import { PLASMIC } from "@/plasmic-init";
 import { request, gql } from 'graphql-request';
 import Head from 'next/head'
+import CustomHead from "../components/next-head";
 
 const allFetchDynamicPaths = require('../utils/fetchDynamicPaths');
 
@@ -39,11 +40,13 @@ export default function PlasmicLoaderPage(props: {
       >
 
           <Analytics />
+<CustomHead />
           <Head>
             <link rel="icon" href={`/icons/${process.env.NEXT_PUBLIC_FAVICON}`} />
             
             {/* Adding the script here */}
           </Head>
+
       <PlasmicComponent component={pageMeta.displayName} />
           
 
