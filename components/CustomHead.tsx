@@ -6,11 +6,11 @@ interface CustomHeadProps {
   mycodehere: string;
 }
 
-const CustomHead = ({ mycodehere }) => {
+const CustomHead: React.FC<CustomHeadProps> = ({ mycodehere }) => {
   return (
-<Head>
-{parse(mycodehere)}
-</Head>
+    <Head>
+      {parse(mycodehere)}
+    </Head>
   );
 };
 
