@@ -113,7 +113,7 @@ PLASMIC.registerComponent(CustomHead, {
   },
 });
 
-import FramerMotionComponent from './components/FramerMotionComponent';
+/* import FramerMotionComponent from './components/FramerMotionComponent'; */
 
 PLASMIC.registerComponent(FramerMotionComponent, {
   name: "Framer Motion",
