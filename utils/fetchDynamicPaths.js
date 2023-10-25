@@ -63,7 +63,7 @@ async function fetchDynamicPaths_WMSH() {
         for (const postId of blogPostsIds) {
             const postResponse = await axios.get(`${ENDPOINT}/items/Blog_Posts/${postId}`, { headers });
             const slug = postResponse.data.data.slug;
-            blogPostPaths.push(`/blog-post/${slug}`);
+            blogPostPaths.push(`/blog/post/${slug}`);
         }
 
 // Fetch services ID list and generate paths
