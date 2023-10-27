@@ -138,3 +138,20 @@ PLASMIC.registerComponent(FramerMotionComponent, {
 });
 
 */
+
+import schema_article from './components/schema_article';
+
+PLASMIC.registerComponent(schema_article, {
+  name: "Schema: Article",
+  props: {
+      headline: string;
+  description: string;
+  datePublished: string;
+  dateModified: string;
+  image: string[];
+  authorName: string;
+  authorUrl: string;
+  publisherName: string;
+  publisherLogoUrl: string;
+    },
+  });
