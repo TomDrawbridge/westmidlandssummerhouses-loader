@@ -139,19 +139,17 @@ PLASMIC.registerComponent(FramerMotionComponent, {
 
 */
 
-import schema_article from './components/schema_article';
+import schemaArticle from './components/schema_article'; 
 
-PLASMIC.registerComponent(schema_article, {
-  name: "Schema: Article",
+PLASMIC.registerComponent(schemaArticle, {
+  name: "Article Schema/Markdown",
   props: {
-      headline: string;
-  description: string;
-  datePublished: string;
-  dateModified: string;
-  image: string[];
-  authorName: string;
-  authorUrl: string;
-  publisherName: string;
-  publisherLogoUrl: string;
-    },
-  });
+      headline: 'string',
+  image: 'string',
+  authorType: 'string',
+  authorName: 'string',
+  publisherName: 'string',
+  publisherLogoUrl: 'string',
+  datePublished: 'string',
+  },
+});

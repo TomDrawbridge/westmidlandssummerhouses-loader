@@ -1,70 +1,53 @@
 import React from 'react';
-import Head from 'next/head'; // Import the Next.js Head component
+import Head from 'next/head';
 
-const JsonLd = ({ children }) => {
+interface BlogPostingProps {
+  headline: string;
+  image: string;
+  authorType: string; 
+  authorName: string;
+  publisherName: string;
+  publisherLogoUrl: string;
+  datePublished: string;
+}
+
+const BlogPosting: React.FC<BlogPostingProps> = ({
+  headline,
+  image,
+  authorType,
+  authorName,
+  publisherName,
+  publisherLogoUrl,
+  datePublished
+}) => {
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": headline,
+    "image": image,  
+    "author": {
+      "@type": authorType,
+      "name": authorName
+    },  
+    "publisher": {
+      "@type": "Organization",
+      "name": publisherName,
+      "logo": {
+        "@type": "ImageObject",
+        "url": publisherLogoUrl
+      }
+    },
+    "datePublished": datePublished
+  };
+
   return (
     <Head>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(children) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
     </Head>
   );
 };
 
-export default JsonLd;
-
-interface schema_articleProps {
-  headline: string;
-  description: string;
-  datePublished: string;
-  dateModified: string;
-  image: string[];
-  authorName: string;
-  authorUrl: string;
-  publisherName: string;
-  publisherLogoUrl: string;
-}
-
-const schema_article: React.FC<schema_articleProps> = ({
-  headline,
-  description,
-  datePublished,
-  dateModified,
-  image,
-  authorName,
-  authorUrl,
-  publisherName,
-  publisherLogoUrl,
-}) => {
-  return (
-    <JsonLd>
-      {{
-        "@context": "https://schema.org",
-        "@type": "Article",
-        headline,
-        description,
-        datePublished,
-        dateModified,
-        image,
-        author: [
-          {
-            "@type": "Person",
-            name: authorName,
-            url: authorUrl,
-          },
-        ],
-        publisher: {
-          "@type": "Organization",
-          name: publisherName,
-          logo: {
-            "@type": "ImageObject",
-            url: publisherLogoUrl,
-          },
-        },
-      }}
-    </JsonLd>
-  );
-};
-
-export default schema_article;
+export default BlogPosting;
