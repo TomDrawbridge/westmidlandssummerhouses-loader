@@ -118,26 +118,39 @@ displayName: "Google Analytics ID",
   },
 });
 
-/* import FramerMotionComponent from './components/FramerMotionComponent'; 
+import FramerMotionComponent from './components/FramerMotionComponent'; 
 
 PLASMIC.registerComponent(FramerMotionComponent, {
   name: "Framer Motion",
   isAttachment: true,
   props: {
+  className: "string",
     children: 'slot',
-    transition: {
-      type: "object",
-      defaultValue: { duration: 1 },
-      control: {
-        type: "slider",
-        min: 0,
-        max: 5
-      }
-    }
-  },
-});
+  duration: "number",
+  bounce: "number",
+  delay: "number",
+    initialX: {
+      displayName: "Initial X",
+      type: "number",
+    },
+    initialY: {
+      displayName: "Initial Y",
+      type: "number",
+    },
+    initialRotate: {
+      displayName: "Initial Rotation",
+      type: "number",
+    },
+    initialOpacity: {
+      displayName: "Initial Opacity",
+      type: "number",
+      control: "slider",
+      min: 0,
+      max: 1
+    },
 
-*/
+},
+});
 
 import schemaArticle from './components/schema_article'; 
 
