@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { motion, useInView, stagger, staggerChildren } from 'framer-motion';
+import { motion, useInView, stagger } from 'framer-motion';
 
 interface FramerMotionComponentProps {
   className: string;
@@ -30,7 +30,6 @@ const FramerMotionComponent: React.FC<FramerMotionComponentProps> = ({
   inViewY = 0,
   inViewOpacity = 1,
   inViewRotate = 0,
-  stagger = 0.5,
   children
 }) => {
   const ref = React.useRef(null);
@@ -61,7 +60,6 @@ const FramerMotionComponent: React.FC<FramerMotionComponentProps> = ({
         duration: duration,
         bounce: bounce,
         delay: delay,
-        staggerChildren: stagger, 
       }}
     >
       {children}
