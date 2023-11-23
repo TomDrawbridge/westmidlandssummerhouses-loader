@@ -10,6 +10,7 @@ import { initPlasmicLoader } from "@plasmicapp/loader-nextjs";
 import { CaisyRichText } from "./components/Caisy/CaisyRichText";
 import { registerReveal	 } from "./components/react-awesome-reveal";
 import { registerSlider } from "./components/plasmic-keen-slider";
+import { TrainerizeProvider } from "./components/TrainerizeProvider";
 
 
 
@@ -47,6 +48,12 @@ registerSlider(PLASMIC);
 
 PLASMIC.registerGlobalContext(ScrollProvider, {
   name: "ScrollProvider",
+  providesData: true,
+  props: {},
+});
+
+PLASMIC.registerGlobalContext(TrainerizeProvider, {
+  name: "Trainerize Provider",
   providesData: true,
   props: {},
 });

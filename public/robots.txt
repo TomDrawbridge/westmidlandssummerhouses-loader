@@ -3,7 +3,7 @@ User-agent: *
 Allow: /
 
 # Host
-Host: westmidlandssummerhouses.com
+Host: anakaticfitness.com
 
 # Sitemaps
-Sitemap: westmidlandssummerhouses.com/sitemap.xml
+Sitemap: anakaticfitness.com/sitemap.xml

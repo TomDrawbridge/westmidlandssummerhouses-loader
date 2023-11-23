@@ -97,8 +97,40 @@ async function fetchDynamicPaths_WMSH() {
     }
 }
 
+async function fetchDynamicPaths_Generic() {
+    const ENDPOINT = process.env.DIRECTUS_ENDPOINT;
+    const TOKEN = process.env.DIRECTUS_TOKEN;
+    const headers = TOKEN ? { 'Authorization': `Bearer ${TOKEN}` } : {};
+
+    try {
+        // Fetch blog posts ID list
+        const blogPostsResponse = await axios.get(`${ENDPOINT}/items/Blog_Posts`, { headers });
+        const blogPostsIds = blogPostsResponse.data.data.map(post => post.id) || [];
+
+        // Fetch individual blog posts and generate paths
+        const blogPostPaths = [];
+        for (const postId of blogPostsIds) {
+            const postResponse = await axios.get(`${ENDPOINT}/items/Blog_Posts/${postId}`, { headers });
+            const slug = postResponse.data.data.slug;
+            blogPostPaths.push(`/blog/post/${slug}`);
+        }
+
+
+        // Combine and return result
+        const result = [...blogPostPaths];
+        console.log("Result from fetchDynamicPaths:", result);
+        return result.length ? result : [];
+
+    } catch (error) {
+        console.error('Error fetching data from Directus:', error);
+        return [];
+    }
+}
+
+
 
 module.exports = {
     fetchDynamicPaths_1Hire,
-    fetchDynamicPaths_WMSH
+    fetchDynamicPaths_WMSH,
+fetchDynamicPaths_Generic
 };
