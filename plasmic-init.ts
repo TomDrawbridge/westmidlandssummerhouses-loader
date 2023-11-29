@@ -15,6 +15,7 @@ import { TrainerizeProvider } from "./components/TrainerizeProvider";
 
 
 const isDevelopment = process.env.NODE_ENV === 'development';
+const enableTrainerize = process.env.ENABLE_TRAINERIZE === 'true';
 console.log("Plasmic preview mode:", isDevelopment);
 
 export const PLASMIC = initPlasmicLoader({
@@ -52,11 +53,13 @@ PLASMIC.registerGlobalContext(ScrollProvider, {
   props: {},
 });
 
-PLASMIC.registerGlobalContext(TrainerizeProvider, {
-  name: "Trainerize Provider",
-  providesData: true,
-  props: {},
-});
+if (enableTrainerize) {
+  PLASMIC.registerGlobalContext(TrainerizeProvider, {
+    name: "Trainerize Provider",
+    providesData: true,
+    props: {},
+  });
+}
 
 PLASMIC.registerComponent(Parallax, {
   name: "Parallax",
