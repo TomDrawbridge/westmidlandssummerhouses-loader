@@ -24,6 +24,7 @@ export default function PlasmicLoaderPage(props: {
   queryCache?: Record<string, any>;
 }) {
   const { plasmicData, queryCache } = props;
+console.log("plasmicData", plasmicData); console.log("queryCache", queryCache)
   const router = useRouter();
   if (!plasmicData || plasmicData.entryCompMetas.length === 0) {
     return <Error statusCode={404} />;
@@ -67,6 +68,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
       loader={PLASMIC}
       prefetchedData={plasmicData}
       pageParams={pageMeta.params}
+      pageRoute={pageMeta.path}
     >
       <PlasmicComponent component={pageMeta.displayName} />
     </PlasmicRootProvider>
