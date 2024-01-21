@@ -11,6 +11,7 @@ import { CaisyRichText } from "./components/Caisy/CaisyRichText";
 import { registerReveal	 } from "./components/react-awesome-reveal";
 import { registerSlider } from "./components/plasmic-keen-slider";
 import { TrainerizeProvider } from "./components/TrainerizeProvider";
+import NextScript from "./components/NextScript";
 
 
 
@@ -73,6 +74,14 @@ className: 'string',
   },
   providesData: true,
 });
+
+PLASMIC.registerComponent(NextScript, {
+  name: "NextScript",
+  props: {
+    src: "string",
+  },
+});
+
 
 import FeatherIcon from "./components/FeatherIcon";
 
