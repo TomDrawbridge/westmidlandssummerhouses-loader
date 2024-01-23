@@ -12,6 +12,7 @@ import { registerReveal	 } from "./components/react-awesome-reveal";
 import { registerSlider } from "./components/plasmic-keen-slider";
 import { TrainerizeProvider } from "./components/TrainerizeProvider";
 import NextScript from "./components/NextScript";
+import { FormUpload } from "./components/uploadCare";
 
 
 
@@ -61,6 +62,13 @@ if (enableTrainerize) {
     props: {},
   });
 }
+
+PLASMIC.registerComponent(FormUpload, {
+  name: "FormUpload",
+  props: {},
+  importPath: "@pages/plasmic",
+  importName: "FormUpload"
+})
 
 PLASMIC.registerComponent(Parallax, {
   name: "Parallax",
