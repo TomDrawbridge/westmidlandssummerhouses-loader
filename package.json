@@ -34,7 +34,6 @@
     "graphql-request": "^6.1.0",
     "html-react-parser": "^4.2.9",
     "http-proxy-middleware": "^2.0.6",
-    "huge-icons": "^1.0.0",
     "next": "^13.4.8",
     "next-sitemap": "^4.2.2",
     "plasmic": "^1.0.3",
