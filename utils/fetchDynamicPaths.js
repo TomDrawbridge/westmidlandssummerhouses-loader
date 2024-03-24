@@ -126,11 +126,50 @@ async function fetchDynamicPaths_Generic() {
         return [];
     }
 }
+async function fetchDynamicPaths_DeluxeEscorts() {
+    const ENDPOINT = process.env.DIRECTUS_ENDPOINT;
+    const TOKEN = process.env.DIRECTUS_TOKEN;
+    const headers = TOKEN ? { 'Authorization': `Bearer ${TOKEN}` } : {};
 
+    try {
+        // Fetch blog posts ID list
+        const blogPostsResponse = await axios.get(`${ENDPOINT}/items/blog_posts`, { headers });
+        const blogPostsIds = blogPostsResponse.data.data.map(post => post.id) || [];
 
+        // Fetch individual blog posts and generate paths
+        const blogPostPaths = [];
+        for (const postId of blogPostsIds) {
+            const postResponse = await axios.get(`${ENDPOINT}/items/blog_posts/${postId}`, { headers });
+            const slug = postResponse.data.data.slug;
+            blogPostPaths.push(`/blog/post/${slug}`);
+        }
+
+        // Fetch escorts ID list
+        const escortsResponse = await axios.get(`${ENDPOINT}/items/escorts`, { headers });
+        const escortsIds = escortsResponse.data.data.map(escort => escort.id) || [];
+
+        // Fetch individual escorts and generate paths
+        const escortPaths = [];
+        for (const escortId of escortsIds) {
+            const escortResponse = await axios.get(`${ENDPOINT}/items/escorts/${escortId}`, { headers });
+            const url = escortResponse.data.data.url;
+            escortPaths.push(`/escorts/${url}`);
+        }
+
+        // Combine blog post paths and escort paths
+        const result = [...blogPostPaths, ...escortPaths];
+        console.log("Result from fetchDynamicPaths:", result);
+        return result.length ? result : [];
+
+    } catch (error) {
+        console.error('Error fetching data from Directus:', error);
+        return [];
+    }
+}
 
 module.exports = {
     fetchDynamicPaths_1Hire,
     fetchDynamicPaths_WMSH,
-fetchDynamicPaths_Generic
+    fetchDynamicPaths_Generic,
+    fetchDynamicPaths_DeluxeEscorts
 };
