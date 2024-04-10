@@ -1,43 +1,38 @@
-import React, { useState, createContext } from 'react';
-import { usePlasmicQueryData, DataProvider } from '@plasmicapp/loader-nextjs';
+import React, { ReactNode, useEffect, useState } from "react";
+import { DataProvider } from "@plasmicapp/loader-nextjs";
 
-// Define the shape of the data using TypeScript interface
-export interface TrainerizeData {
-  // replace with the actual shape of your data
-  programs: any[];
+export interface TrainerizeContextValue {
+  mealTemplateList: any[]; // Adjust the type according to the expected data structure
 }
 
-// Create a context for the Trainerize data
-export const TrainerizeContext = createContext<TrainerizeData | null>(null);
+export const TrainerizeContext = React.createContext<TrainerizeContextValue>({
+  mealTemplateList: [],
+});
 
 export function TrainerizeProvider({ children }: { children: React.ReactNode }) {
-  const { data } = usePlasmicQueryData('/getList', async () => {
-    const response = await fetch("/api/v03/program/getList", {
-      method: 'POST',
-      headers: {
-        accept: 'application/json',
-        'content-type': 'application/json',
-      },
-      body: JSON.stringify({ type: 'all' }),
-    });
-    if (!response.ok) {
-      // handle errors
-      console.error("API request failed", await response.text());
-      return null;
-    }
-    return await response.json();
-  });
+  console.log('TrainerizeProvider is running');
+  const [mealTemplateList, setMealTemplateList] = useState<any[]>([]);
 
-  // You can manage the state here if needed, or just pass the data directly
-  const [trainerizeData, setTrainerizeData] = useState<TrainerizeData | null>(data);
+  useEffect(() => {
+    const fetchData = async () => {
+      // Fetching from the local API route instead of the external API
+      const response = await fetch('/api/getMealTemplateList');
+
+      if (response.ok) {
+        const data = await response.json();
+        setMealTemplateList(data); // Adjust based on the actual structure of the response
+      } else {
+        console.error('Failed to fetch meal template list');
+      }
+    };
+
+    fetchData().catch(console.error);
+  }, []);
 
   return (
-    <TrainerizeContext.Provider value={trainerizeData}>
-      {data && (
-        <DataProvider name="Trainerize" data={data}>
-          {children}
-        </DataProvider>
-      )}
-    </TrainerizeContext.Provider>
+    <DataProvider name={"mealTemplateList"} data={mealTemplateList}>
+      {children}
+    </DataProvider>
   );
 }
+

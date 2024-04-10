@@ -55,13 +55,15 @@ PLASMIC.registerGlobalContext(ScrollProvider, {
   props: {},
 });
 
+
 if (enableTrainerize) {
-  PLASMIC.registerGlobalContext(TrainerizeProvider, {
-    name: "Trainerize Provider",
-    providesData: true,
-    props: {},
-  });
+    PLASMIC.registerGlobalContext(TrainerizeProvider, {
+        name: "Trainerize Provider",
+        providesData: true,
+        props: {},
+    });
 }
+
 
 PLASMIC.registerComponent(FormUpload, {
   name: "FormUpload",
