@@ -10,12 +10,12 @@ import { Analytics } from '@vercel/analytics/react';
 import Error from "next/error";
 import { useRouter } from "next/router";
 import { PLASMIC } from "@/plasmic-init";
-import Head from 'next/head';
-import Script from 'next/script'; // Import the Script component
+import { request, gql } from 'graphql-request';
+import Head from 'next/head'
 
 const allFetchDynamicPaths = require('../utils/fetchDynamicPaths');
 
-const { DYNAMIC_PATHS_SOURCE = 'default', NEXT_PUBLIC_GTM_ID, NODE_ENV, NEXT_PUBLIC_FAVICON } = process.env;
+const { DYNAMIC_PATHS_SOURCE = 'default' } = process.env;
 
 const fetchDynamicPaths = allFetchDynamicPaths[`fetchDynamicPaths_${DYNAMIC_PATHS_SOURCE}`] || allFetchDynamicPaths.fetchDynamicPaths_default;
 
@@ -24,41 +24,32 @@ export default function PlasmicLoaderPage(props: {
   queryCache?: Record<string, any>;
 }) {
   const { plasmicData, queryCache } = props;
+console.log("plasmicData", plasmicData); console.log("queryCache", queryCache)
   const router = useRouter();
   if (!plasmicData || plasmicData.entryCompMetas.length === 0) {
     return <Error statusCode={404} />;
   }
   const pageMeta = plasmicData.entryCompMetas[0];
   return (
-    <>
-      <Head>
-        <link rel="icon" href={`/icons/${NEXT_PUBLIC_FAVICON}`} />
-      </Head>
-      {NODE_ENV === 'production' && (
-        <Script id="gtm-script" strategy="afterInteractive" dangerouslySetInnerHTML={{
-          __html: `(function (w, d, s, l, i) {
-              w[l] = w[l] || []; w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
-              var f = d.getElementsByTagName(s)[0], j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : '';
-              j.async = true; j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
-            })(window, document, 'script', 'dataLayer', '${NEXT_PUBLIC_GTM_ID}');`
-        }} />
-      )}
-      <PlasmicRootProvider
-        loader={PLASMIC}
-        prefetchedData={plasmicData}
-        prefetchedQueryData={queryCache}
-        pageParams={pageMeta.params}
-        pageQuery={router.query}
+    <PlasmicRootProvider
+      loader={PLASMIC}
+      prefetchedData={plasmicData}
+      prefetchedQueryData={queryCache}
+      pageParams={pageMeta.params}
+      pageQuery={router.query}
       >
-        {NODE_ENV === 'production' && (
-          <noscript dangerouslySetInnerHTML={{
-            __html: `<iframe src="https://www.googletagmanager.com/ns.html?id=${NEXT_PUBLIC_GTM_ID}" height="0" width="0" style="display:none;visibility:hidden"></iframe>`
-          }}></noscript>
-        )}
-        <Analytics />
-        <PlasmicComponent component={pageMeta.displayName} />
-      </PlasmicRootProvider>
-    </>
+
+          <Analytics />
+          <Head>
+            <link rel="icon" href={`/icons/${process.env.NEXT_PUBLIC_FAVICON}`} />
+            
+            {/* Adding the script here */}
+          </Head>
+
+      <PlasmicComponent component={pageMeta.displayName} />
+          
+
+    </PlasmicRootProvider>
   );
 }
 
@@ -67,9 +58,11 @@ export const getStaticProps: GetStaticProps = async (context) => {
   const plasmicPath = typeof catchall === 'string' ? catchall : Array.isArray(catchall) ? `/${catchall.join('/')}` : '/';
   const plasmicData = await PLASMIC.maybeFetchComponentData(plasmicPath);
   if (!plasmicData) {
-    return { props: {} }; // non-Plasmic catch-all
+    // non-Plasmic catch-all
+    return { props: {} };
   }
   const pageMeta = plasmicData.entryCompMetas[0];
+  // Cache the necessary data fetched for the page
   const queryCache = await extractPlasmicQueryData(
     <PlasmicRootProvider
       loader={PLASMIC}
@@ -80,24 +73,40 @@ export const getStaticProps: GetStaticProps = async (context) => {
       <PlasmicComponent component={pageMeta.displayName} />
     </PlasmicRootProvider>
   );
+  // Use revalidate if you want incremental static regeneration
   return { props: { plasmicData, queryCache }, revalidate: 60 };
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
   let dynamicPaths = [];
+
+  // Check if fetchDynamicPaths is a function before calling it
   if (typeof fetchDynamicPaths === 'function') {
     dynamicPaths = await fetchDynamicPaths();
   }
+
   const pageModules = await PLASMIC.fetchPages();
+
+  // Start with the static paths from Plasmic
   const paths = pageModules.map((mod) => ({
-    params: { catchall: mod.path.substring(1).split("/") },
+    params: {
+      catchall: mod.path.substring(1).split("/"),
+    },
   }));
+
+  // Only add dynamic paths if they exist
   if (dynamicPaths && dynamicPaths.length > 0) {
     paths.push(
       ...dynamicPaths.map((path: string) => ({
-        params: { catchall: path.substring(1).split("/") },
+        params: {
+          catchall: path.substring(1).split("/"),
+        },
       }))
     );
   }
-  return { paths, fallback: "blocking" };
+
+  return {
+    paths,
+    fallback: "blocking",
+  };
 };
