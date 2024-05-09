@@ -22,7 +22,7 @@ export default async function handler(req, res) {
 
         try {
             // Extract other parameters from the query string or use defaults
-            const { start = 0, count = 10, groupId = 260206 } = req.query;
+            const { start = 0, count = 10, groupId = 260206, mealTemplateId = 0 } = req.query;
 
             const response = await fetch(allowedEndpoints[endpoint], {
                 method: 'POST', // Adjust method as necessary per endpoint
@@ -34,6 +34,7 @@ export default async function handler(req, res) {
                     start: parseInt(start),
                     count: parseInt(count),
                     groupId: parseInt(groupId),
+                    mealTemplateId: parseInt(mealTemplateId),
                 }),
             });
 
