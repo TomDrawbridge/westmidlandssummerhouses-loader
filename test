@@ -1,0 +1,60 @@
+[33mcommit c85b1bbebde5c8ac5ab652855b78cba57f0f3225[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m)[m
+Author: TomDrawbridge <tom.prest@drawbridgelabs.co.uk>
+Date:   Mon Jun 3 22:52:09 2024 +0200
+
+    test
+
+[1mdiff --git a/pages/api/getTrainerize.js b/pages/api/getTrainerize.js[m
+[1mindex 2c5add2..e87925f 100644[m
+[1m--- a/pages/api/getTrainerize.js[m
+[1m+++ b/pages/api/getTrainerize.js[m
+[36m@@ -8,7 +8,9 @@[m [mexport default async function handler(req, res) {[m
+     if (req.method === 'GET') {[m
+         const allowedEndpoints = {[m
+             getMealTemplateList: 'https://api.trainerize.com/v03/dailyNutrition/getMealTemplateList',[m
+[31m-            getMealTemplate: 'https://api.trainerize.com/v03/dailyNutrition/getmealtemplate'[m
+[32m+[m[32m            getMealTemplate: 'https://api.trainerize.com/v03/dailyNutrition/getMealTemplate',[m
+[32m+[m[32m            getClientList: 'https://api.trainerize.com/v03/user/getClientList',[m
+[32m+[m[32m            getClientSummary: 'https://api.trainerize.com/v03/user/getClientSummary',[m
+             // Add more endpoints as needed[m
+         };[m
+ [m
+[36m@@ -21,8 +23,22 @@[m [mexport default async function handler(req, res) {[m
+         }[m
+ [m
+         try {[m
+[31m-            // Extract other parameters from the query string or use defaults[m
+[31m-            const { start = 0, count = 10, groupId = 260206, mealTemplateId = 0 } = req.query;[m
+[32m+[m[32m            // Common parameters[m
+[32m+[m[32m            const { start = 0, count = 10, groupId = 260206, mealTemplateId = 0, sort = "dateAdded" } = req.query;[m
+[32m+[m
+[32m+[m[32m            // Build the request body based on the endpoint[m
+[32m+[m[32m            let requestBody = {[m
+[32m+[m[32m                start: parseInt(start),[m
+[32m+[m[32m                count: parseInt(count),[m
+[32m+[m[32m                groupId: parseInt(groupId),[m
+[32m+[m[32m                mealTemplateId: parseInt(mealTemplateId),[m
+[32m+[m[32m                sort: sort,[m
+[32m+[m[32m            };[m
+[32m+[m
+[32m+[m[32m            // Add userID only for endpoints that require it[m
+[32m+[m[32m            if (endpoint !== 'getClientList') {[m
+[32m+[m[32m                requestBody.userID = parseInt(req.query.userID || 123456);  // Default userID if not provided[m
+[32m+[m[32m            }[m
+ [m
+             const response = await fetch(allowedEndpoints[endpoint], {[m
+                 method: 'POST', // Adjust method as necessary per endpoint[m
+[36m@@ -30,12 +46,7 @@[m [mexport default async function handler(req, res) {[m
+                     'Authorization': `Basic ${process.env.TRAINERIZE_API_KEY}`,[m
+                     'Content-Type': 'application/json',[m
+                 },[m
+[31m-                body: JSON.stringify({[m
+[31m-                    start: parseInt(start),[m
+[31m-                    count: parseInt(count),[m
+[31m-                    groupId: parseInt(groupId),[m
+[31m-                    mealTemplateId: parseInt(mealTemplateId),[m
+[31m-                }),[m
+[32m+[m[32m                body: JSON.stringify(requestBody),[m
+             });[m
+ [m
+             if (response.ok) {[m
