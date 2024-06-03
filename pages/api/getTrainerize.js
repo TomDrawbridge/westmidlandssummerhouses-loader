@@ -8,7 +8,9 @@ export default async function handler(req, res) {
     if (req.method === 'GET') {
         const allowedEndpoints = {
             getMealTemplateList: 'https://api.trainerize.com/v03/dailyNutrition/getMealTemplateList',
-            getMealTemplate: 'https://api.trainerize.com/v03/dailyNutrition/getmealtemplate'
+            getMealTemplate: 'https://api.trainerize.com/v03/dailyNutrition/getMealTemplate',
+            getClientList: 'https://api.trainerize.com/v03/user/getClientList',
+            getClientSummary: 'https://api.trainerize.com/v03/user/getClientSummary',
             // Add more endpoints as needed
         };
 
@@ -21,8 +23,22 @@ export default async function handler(req, res) {
         }
 
         try {
-            // Extract other parameters from the query string or use defaults
-            const { start = 0, count = 10, groupId = 260206, mealTemplateId = 0 } = req.query;
+            // Common parameters
+            const { start = 0, count = 10, groupId = 260206, mealTemplateId = 0, sort = "dateAdded" } = req.query;
+
+            // Build the request body based on the endpoint
+            let requestBody = {
+                start: parseInt(start),
+                count: parseInt(count),
+                groupId: parseInt(groupId),
+                mealTemplateId: parseInt(mealTemplateId),
+                sort: sort,
+            };
+
+            // Add userID only for endpoints that require it
+            if (endpoint !== 'getClientList') {
+                requestBody.userID = parseInt(req.query.userID || 123456);  // Default userID if not provided
+            }
 
             const response = await fetch(allowedEndpoints[endpoint], {
                 method: 'POST', // Adjust method as necessary per endpoint
@@ -30,12 +46,7 @@ export default async function handler(req, res) {
                     'Authorization': `Basic ${process.env.TRAINERIZE_API_KEY}`,
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({
-                    start: parseInt(start),
-                    count: parseInt(count),
-                    groupId: parseInt(groupId),
-                    mealTemplateId: parseInt(mealTemplateId),
-                }),
+                body: JSON.stringify(requestBody),
             });
 
             if (response.ok) {
