@@ -55,7 +55,7 @@ async function fetchDynamicPaths_WMSH() {
 
     try {
         // Fetch blog posts ID list
-        const blogPostsResponse = await axios.get(`${ENDPOINT}/items/Blog_Posts?filter[Organisation][_eq]=1`, { headers });
+        const blogPostsResponse = await axios.get(`${ENDPOINT}/items/Blog_Posts?filter[status][_eq]="published"`, { headers });
         const blogPostsIds = blogPostsResponse.data.data.map(post => post.id) || [];
 
         // Fetch individual blog posts and generate paths
