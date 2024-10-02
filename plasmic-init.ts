@@ -3,6 +3,7 @@
 import 'dotenv/config'
 require('dotenv').config() 
 
+
 import { ScrollProvider } from "./components/ScrollContext";
 import { registerAll } from '@plasmicpkgs/plasmic-chakra-ui';
 import { Parallax } from "./components/ParallaxText";
@@ -10,14 +11,13 @@ import { initPlasmicLoader } from "@plasmicapp/loader-nextjs";
 import { CaisyRichText } from "./components/Caisy/CaisyRichText";
 import { registerReveal	 } from "./components/react-awesome-reveal";
 import { registerSlider } from "./components/plasmic-keen-slider";
-import { TrainerizeProvider } from "./components/TrainerizeProvider";
+
 import NextScript from "./components/NextScript";
 import { FormUpload } from "./components/uploadCare";
 
 
 
 const isDevelopment = process.env.NODE_ENV === 'development';
-const enableTrainerize = process.env.ENABLE_TRAINERIZE === 'true';
 console.log("Plasmic preview mode:", isDevelopment);
 
 export const PLASMIC = initPlasmicLoader({
@@ -56,11 +56,14 @@ PLASMIC.registerGlobalContext(ScrollProvider, {
 });
 
 
-    PLASMIC.registerGlobalContext(TrainerizeProvider, {
-        name: "Trainerize Provider",
-        providesData: true,
-        props: {},
-    });
+import WhatsAppWidgetComponent from "./components/whats-app-widget";
+
+PLASMIC.registerComponent(WhatsAppWidgetComponent, {
+  name: "WhatsAppWidgetComponent",
+  props: {},
+});
+
+
 
 
 PLASMIC.registerComponent(FormUpload, {
@@ -102,20 +105,6 @@ PLASMIC.registerComponent(FeatherIcon, {
     strokeWidth: 'number',
   },
 });
-
-PLASMIC.registerComponent(CaisyRichText, {
-  name: "CaisyRichText",
-  props: {
-    node: 'object',
-className: 'string',
-    connections: 'object', // This should allow you to set connections from Plasmic
-    themeResetClass: {
-      type: 'themeResetClass',
-      targetAllTags: true,
-    },
-  },
-});
-
 
 import ReactMarkdownComponent from "./components/ReactMarkdown";
 

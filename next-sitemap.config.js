@@ -1,32 +1,56 @@
+const path = require('path');
 const allFetchDynamicPaths = require('./utils/fetchDynamicPaths');
 
 const { DYNAMIC_PATHS_SOURCE = 'default' } = process.env;
 
-const fetchDynamicPathsFunc = allFetchDynamicPaths[`fetchDynamicPaths_${DYNAMIC_PATHS_SOURCE}`] || allFetchDynamicPaths.fetchDynamicPaths_default;
+const fetchDynamicPaths = allFetchDynamicPaths[`fetchDynamicPaths_${DYNAMIC_PATHS_SOURCE}`] || allFetchDynamicPaths.fetchDynamicPaths_default;
 
 /** @type {import('next-sitemap').IConfig} */
 module.exports = {
-  siteUrl: process.env.SITE_URL,
+  siteUrl: process.env.SITE_URL || 'https://example.com',
   generateRobotsTxt: true,
   
   additionalPaths: async (config) => {
     let dynamicPaths = [];
 
-    // Check if fetchDynamicPathsFunc is a function before calling it
-    if (typeof fetchDynamicPathsFunc === 'function') {
-      dynamicPaths = await fetchDynamicPathsFunc();
+    if (typeof fetchDynamicPaths === 'function') {
+      try {
+        dynamicPaths = await fetchDynamicPaths();
+      } catch (error) {
+        console.error('Error fetching dynamic paths:', error);
+      }
     }
 
-    console.log('Dynamic Paths:', dynamicPaths); // Debug log here
+    console.log('Dynamic Paths:', dynamicPaths); // Debug log
 
-    // transform these paths into the expected format
-    const result = dynamicPaths.map(path => {
-      return {
-        loc: path,
-        lastmod: new Date().toISOString() // if you wish to set the last modified date
-      };
-    });
+    return dynamicPaths.map(path => ({
+      loc: path,
+      lastmod: new Date().toISOString(),
+      changefreq: 'daily',
+      priority: 0.7
+    }));
+  },
 
-    return result;
-  }
+  transform: async (config, path) => {
+    // Custom transformation for default pages
+    return {
+      loc: path,
+      changefreq: config.changefreq,
+      priority: config.priority,
+      lastmod: config.autoLastmod ? new Date().toISOString() : undefined,
+      alternateRefs: config.alternateRefs ?? [],
+    }
+  },
+
+  robotsTxtOptions: {
+    policies: [
+      {
+        userAgent: '*',
+        allow: '/',
+      },
+    ],
+    additionalSitemaps: [
+      `${process.env.SITE_URL}/server-sitemap.xml`,
+    ],
+  },
 };

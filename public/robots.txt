@@ -3,7 +3,8 @@ User-agent: *
 Allow: /
 
 # Host
-Host: deluxeescorts.co.uk
+Host: https://westmidlandssummerhouses.com
 
 # Sitemaps
-Sitemap: deluxeescorts.co.uk/sitemap.xml
+Sitemap: https://westmidlandssummerhouses.com/sitemap.xml
+Sitemap: https://westmidlandssummerhouses.com/server-sitemap.xml
