@@ -68,7 +68,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
     </PlasmicRootProvider>
   );
   
-  return { props: { plasmicData, queryCache }, revalidate: 60 };
+  return { props: { plasmicData, queryCache }, revalidate: 3600 };
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
