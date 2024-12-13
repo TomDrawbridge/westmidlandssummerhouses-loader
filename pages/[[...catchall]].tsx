@@ -44,6 +44,14 @@ export default function PlasmicLoaderPage(props: {
         {/* You might want to add other OpenGraph tags here */}
         <meta property="og:type" content="website" />
         <meta property="og:url" content={canonicalUrl} />
+        <link 
+          rel="stylesheet"
+          href="https://api.fontshare.com/v2/css?f[]=clash-grotesk@1&display=swap"
+        />
+        <link 
+          rel="stylesheet"
+          href="https://api.fontshare.com/v2/css?f[]=satoshi@1,2&display=swap"
+        />
       </Head>
     <PlasmicRootProvider
       loader={PLASMIC}
