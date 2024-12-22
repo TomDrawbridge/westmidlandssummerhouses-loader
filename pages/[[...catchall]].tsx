@@ -10,11 +10,25 @@ import { Analytics } from '@vercel/analytics/react';
 import Error from "next/error";
 import { useRouter } from "next/router";
 import { PLASMIC } from "@/plasmic-init";
-import Head from 'next/head'
-import * as allFetchDynamicPaths from '../utils/fetchDynamicPaths';
+import Head from 'next/head';
+import Document, { Html, Head as DocumentHead, Main, NextScript } from 'next/document';
+
+// Custom Document component to add lang attribute to HTML tag
+class MyDocument extends Document {
+  render() {
+    return (
+      <Html lang="en">
+        <DocumentHead />
+        <body>
+          <Main />
+          <NextScript />
+        </body>
+      </Html>
+    );
+  }
+}
 
 const { DYNAMIC_PATHS_SOURCE = 'default' } = process.env;
-
 const fetchDynamicPaths = (allFetchDynamicPaths as any)[`fetchDynamicPaths_${DYNAMIC_PATHS_SOURCE}`] || allFetchDynamicPaths.fetchDynamicPaths_default;
 
 export default function PlasmicLoaderPage(props: {
@@ -29,14 +43,16 @@ export default function PlasmicLoaderPage(props: {
   }
   
   const pageMeta = plasmicData.entryCompMetas[0];
+  const currentURL = `${process.env.NEXT_PUBLIC_SITE_URL}${router.asPath}`;
 
   return (
-   <>
-<Analytics/>
+    <>
+      <Analytics/>
       <Head>
         <meta property="og:site_name" content="West Midlands Summerhouses" />
-        {/* You might want to add other OpenGraph tags here */}
         <meta property="og:type" content="website" />
+        {/* Add hreflang tag */}
+        <link rel="alternate" href={currentURL} hreflang="en" />
         <link 
           rel="stylesheet"
           href="https://api.fontshare.com/v2/css?f[]=clash-grotesk@1&display=swap"
@@ -46,20 +62,20 @@ export default function PlasmicLoaderPage(props: {
           href="https://api.fontshare.com/v2/css?f[]=satoshi@1,2&display=swap"
         />
       </Head>
-    <PlasmicRootProvider
-      loader={PLASMIC}
-      prefetchedData={plasmicData}
-      prefetchedQueryData={queryCache}
-      pageParams={pageMeta.params}
-      pageQuery={router.query}
-    >
-      <Analytics />
-      <Head>
-        <link rel="icon" href={`/icons/${process.env.NEXT_PUBLIC_FAVICON}`} />
-      </Head>
-      <PlasmicComponent component={pageMeta.displayName} />
-    </PlasmicRootProvider>
-   </>
+      <PlasmicRootProvider
+        loader={PLASMIC}
+        prefetchedData={plasmicData}
+        prefetchedQueryData={queryCache}
+        pageParams={pageMeta.params}
+        pageQuery={router.query}
+      >
+        <Analytics />
+        <Head>
+          <link rel="icon" href={`/icons/${process.env.NEXT_PUBLIC_FAVICON}`} />
+        </Head>
+        <PlasmicComponent component={pageMeta.displayName} />
+      </PlasmicRootProvider>
+    </>
   );
 }
 
@@ -94,7 +110,6 @@ export const getStaticPaths: GetStaticPaths = async () => {
       catchall: mod.path.substring(1).split("/"),
     },
   }));
-
   let dynamicPaths: string[] = [];
   if (typeof fetchDynamicPaths === 'function') {
     try {
@@ -103,7 +118,6 @@ export const getStaticPaths: GetStaticPaths = async () => {
       console.error('Error fetching dynamic paths:', error);
     }
   }
-
   const allPaths = [
     ...staticPaths,
     ...dynamicPaths.map((path: string) => ({
@@ -112,9 +126,10 @@ export const getStaticPaths: GetStaticPaths = async () => {
       },
     }))
   ];
-
   return {
     paths: allPaths,
     fallback: "blocking",
   };
 };
+
+export { MyDocument };
