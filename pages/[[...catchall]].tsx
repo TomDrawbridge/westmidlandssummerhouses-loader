@@ -30,16 +30,10 @@ export default function PlasmicLoaderPage(props: {
   
   const pageMeta = plasmicData.entryCompMetas[0];
 
-// Clean up the URL path
-  const currentPath = router.asPath.replace('/index', '');
-  const canonicalUrl = `https://westmidlandssummerhouses.com${currentPath === '/index' ? '' : currentPath}`;
-
-  
   return (
    <>
 <Analytics/>
       <Head>
-<link rel="canonical" href={canonicalUrl} />
         <meta property="og:site_name" content="West Midlands Summerhouses" />
         {/* You might want to add other OpenGraph tags here */}
         <meta property="og:type" content="website" />
