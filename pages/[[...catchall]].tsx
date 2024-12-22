@@ -13,7 +13,7 @@ import { PLASMIC } from "@/plasmic-init";
 import Head from 'next/head';
 import * as allFetchDynamicPaths from '../utils/fetchDynamicPaths';
 
-const { DYNAMIC_PATHS_SOURCE = 'default' } = process.env;
+const { DYNAMIC_PATHSSOURCE = 'default' } = process.env;
 const fetchDynamicPaths = (allFetchDynamicPaths as any)[`fetchDynamicPaths${DYNAMIC_PATHS_SOURCE}`] || allFetchDynamicPaths.fetchDynamicPaths_default;
 
 export default function PlasmicLoaderPage(props: {
