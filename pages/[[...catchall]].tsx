@@ -11,25 +11,10 @@ import Error from "next/error";
 import { useRouter } from "next/router";
 import { PLASMIC } from "@/plasmic-init";
 import Head from 'next/head';
-import Document, { Html, Head as DocumentHead, Main, NextScript } from 'next/document';
-
-// Custom Document component to add lang attribute to HTML tag
-class MyDocument extends Document {
-  render() {
-    return (
-      <Html lang="en">
-        <DocumentHead />
-        <body>
-          <Main />
-          <NextScript />
-        </body>
-      </Html>
-    );
-  }
-}
+import * as allFetchDynamicPaths from '../utils/fetchDynamicPaths';
 
 const { DYNAMIC_PATHS_SOURCE = 'default' } = process.env;
-const fetchDynamicPaths = (allFetchDynamicPaths as any)[`fetchDynamicPaths_${DYNAMIC_PATHS_SOURCE}`] || allFetchDynamicPaths.fetchDynamicPaths_default;
+const fetchDynamicPaths = (allFetchDynamicPaths as any)[`fetchDynamicPaths${DYNAMIC_PATHS_SOURCE}`] || allFetchDynamicPaths.fetchDynamicPaths_default;
 
 export default function PlasmicLoaderPage(props: {
   plasmicData?: ComponentRenderData;
@@ -37,22 +22,26 @@ export default function PlasmicLoaderPage(props: {
 }) {
   const { plasmicData, queryCache } = props;
   const router = useRouter();
-  
+  const currentUrl = `${process.env.NEXT_PUBLIC_SITE_URL}${router.asPath}`;
+
   if (!plasmicData || plasmicData.entryCompMetas.length === 0) {
     return <Error statusCode={404} />;
   }
-  
+
   const pageMeta = plasmicData.entryCompMetas[0];
-  const currentURL = `${process.env.NEXT_PUBLIC_SITE_URL}${router.asPath}`;
 
   return (
     <>
-      <Analytics/>
       <Head>
         <meta property="og:site_name" content="West Midlands Summerhouses" />
         <meta property="og:type" content="website" />
-        {/* Add hreflang tag */}
-        <link rel="alternate" href={currentURL} hreflang="en" />
+        <meta property="og:url" content={currentUrl} />
+        
+        {/* hreflang tags */}
+        <link rel="alternate" href={currentUrl} hreflang="en-GB" />
+        <link rel="alternate" href={currentUrl} hreflang="x-default" />
+        
+        {/* Fonts */}
         <link 
           rel="stylesheet"
           href="https://api.fontshare.com/v2/css?f[]=clash-grotesk@1&display=swap"
@@ -61,7 +50,13 @@ export default function PlasmicLoaderPage(props: {
           rel="stylesheet"
           href="https://api.fontshare.com/v2/css?f[]=satoshi@1,2&display=swap"
         />
+        
+        {/* Favicon */}
+        <link rel="icon" href={`/icons/${process.env.NEXT_PUBLIC_FAVICON}`} />
       </Head>
+
+      <Analytics/>
+      
       <PlasmicRootProvider
         loader={PLASMIC}
         prefetchedData={plasmicData}
@@ -69,10 +64,6 @@ export default function PlasmicLoaderPage(props: {
         pageParams={pageMeta.params}
         pageQuery={router.query}
       >
-        <Analytics />
-        <Head>
-          <link rel="icon" href={`/icons/${process.env.NEXT_PUBLIC_FAVICON}`} />
-        </Head>
         <PlasmicComponent component={pageMeta.displayName} />
       </PlasmicRootProvider>
     </>
@@ -82,12 +73,12 @@ export default function PlasmicLoaderPage(props: {
 export const getStaticProps: GetStaticProps = async (context) => {
   const { catchall } = context.params ?? {};
   const plasmicPath = typeof catchall === 'string' ? catchall : Array.isArray(catchall) ? `/${catchall.join('/')}` : '/';
-  const plasmicData = await PLASMIC.maybeFetchComponentData(plasmicPath);
   
+  const plasmicData = await PLASMIC.maybeFetchComponentData(plasmicPath);
   if (!plasmicData) {
     return { props: {} };
   }
-  
+
   const pageMeta = plasmicData.entryCompMetas[0];
   const queryCache = await extractPlasmicQueryData(
     <PlasmicRootProvider
@@ -99,7 +90,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
       <PlasmicComponent component={pageMeta.displayName} />
     </PlasmicRootProvider>
   );
-  
+
   return { props: { plasmicData, queryCache }, revalidate: 3600 };
 }
 
@@ -110,6 +101,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
       catchall: mod.path.substring(1).split("/"),
     },
   }));
+
   let dynamicPaths: string[] = [];
   if (typeof fetchDynamicPaths === 'function') {
     try {
@@ -118,6 +110,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
       console.error('Error fetching dynamic paths:', error);
     }
   }
+
   const allPaths = [
     ...staticPaths,
     ...dynamicPaths.map((path: string) => ({
@@ -126,10 +119,9 @@ export const getStaticPaths: GetStaticPaths = async () => {
       },
     }))
   ];
+
   return {
     paths: allPaths,
     fallback: "blocking",
   };
 };
-
-export { MyDocument };
