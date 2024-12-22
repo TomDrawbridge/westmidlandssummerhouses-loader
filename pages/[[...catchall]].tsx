@@ -37,9 +37,9 @@ export default function PlasmicLoaderPage(props: {
         <meta property="og:type" content="website" />
         <meta property="og:url" content={currentUrl} />
         
-        {/* hreflang tags */}
-        <link rel="alternate" href={currentUrl} hreflang="en-GB" />
-        <link rel="alternate" href={currentUrl} hreflang="x-default" />
+        {/* hrefLang tags */}
+        <link rel="alternate" href={currentUrl} hrefLang="en-GB" />
+        <link rel="alternate" href={currentUrl} hrefLang="x-default" />
         
         {/* Fonts */}
         <link 
