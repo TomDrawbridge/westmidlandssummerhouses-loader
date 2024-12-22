@@ -32,7 +32,7 @@ export default function PlasmicLoaderPage(props: {
 
 // Clean up the URL path
   const currentPath = router.asPath.replace('/index', '');
-  const canonicalUrl = `https://www.westmidlandssummerhouses.com${currentPath === '/index' ? '' : currentPath}`;
+  const canonicalUrl = `https://westmidlandssummerhouses.com${currentPath === '/index' ? '' : currentPath}`;
 
   
   return (
