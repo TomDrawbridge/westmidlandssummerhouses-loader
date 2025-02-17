@@ -55,7 +55,7 @@ export default function PlasmicLoaderPage(props: {
     >
       <Analytics />
       <Head>
-        <link rel="icon" href={`/icons/${process.env.NEXT_PUBLIC_FAVICON}`} />
+            <link rel="icon" href="/favicon.ico" />
       </Head>
       <PlasmicComponent component={pageMeta.displayName} />
     </PlasmicRootProvider>
