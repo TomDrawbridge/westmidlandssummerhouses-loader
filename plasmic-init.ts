@@ -182,3 +182,112 @@ PLASMIC.registerComponent(schemaArticle, {
   datePublished: 'string',
   },
 });
+
+
+
+import LightGalleryComponent from "./components/LightGalleryComponent";
+
+PLASMIC.registerComponent(LightGalleryComponent, {
+  name: "LightGalleryComponent",
+  props: {
+    images: {
+      type: "object",
+      defaultValue: [],
+      description: "Array of image objects",
+      helpText: "Array of objects with id, src, thumb, alt, size, and subHtml properties"
+    },
+    imageUrls: {
+      type: "string",
+      defaultValue: "",
+      description: "JSON string of image URLs",
+      helpText: "JSON array of image URLs as a string, e.g., '[\"url1.jpg\", \"url2.jpg\"]'"
+    },
+    video: {
+      type: "object",
+      defaultValue: undefined, // Changed from null to undefined
+      description: "Optional video object",
+      helpText: "Video object with id, src, thumb, alt, title, poster, and subHtml properties. Will be shown first in gallery."
+    },
+    className: {
+      type: "string",
+      defaultValue: "",
+      description: "Additional CSS classes"
+    },
+    maxItemsPerRow: {
+      type: "number",
+      defaultValue: 3,
+      description: "Maximum items per row",
+      helpText: "Number of images to show per row on desktop"
+    },
+    maxRows: {
+      type: "number",
+      defaultValue: undefined,
+      description: "Maximum number of rows",
+      helpText: "Limit the number of rows displayed. Leave empty for unlimited rows."
+    },
+    galleryId: {
+      type: "string",
+      defaultValue: "lightgallery",
+      description: "Unique gallery ID",
+      helpText: "Unique identifier for this gallery instance"
+    },
+    generateVideoThumbnail: {
+      type: "boolean",
+      defaultValue: false,
+      description: "Auto-generate video thumbnails",
+      helpText: "Automatically extract a frame from the video to use as thumbnail"
+    },
+    showThumbnails: {
+      type: "boolean",
+      defaultValue: true,
+      description: "Show thumbnails",
+      helpText: "Display thumbnail navigation at the bottom"
+    },
+    imageHeight: {
+      type: "choice",
+      options: ["small", "medium", "large", "extra-large"],
+      defaultValue: "medium",
+      description: "Image height size",
+      helpText: "Control how tall the images appear in the grid"
+    },
+    enableZoom: {
+      type: "boolean",
+      defaultValue: true,
+      description: "Enable zoom functionality",
+      helpText: "Allow users to zoom in/out of images"
+    },
+    fadeMode: {
+      type: "boolean",
+      defaultValue: true,
+      description: "Use fade transition",
+      helpText: "Use fade effect instead of slide transition"
+    },
+    animateThumb: {
+      type: "boolean",
+      defaultValue: true,
+      description: "Animate thumbnails",
+      helpText: "Enable animated thumbnail transitions"
+    },
+    onInit: {
+      type: "eventHandler",
+      argTypes: [{ name: "detail", type: "object" }],
+      description: "Gallery initialized event"
+    },
+    onBeforeSlide: {
+      type: "eventHandler",
+      argTypes: [{ name: "detail", type: "object" }],
+      description: "Before slide change event"
+    },
+    onAfterSlide: {
+      type: "eventHandler",
+      argTypes: [{ name: "detail", type: "object" }],
+      description: "After slide change event"
+    },
+    showCaptions: {
+      type: "boolean",
+      defaultValue: false,
+      description: "Show image captions",
+      helpText: "Display captions/filenames when viewing images in the lightbox"
+    }
+  },
+});

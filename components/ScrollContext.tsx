@@ -10,7 +10,6 @@ export const ScrollContext = React.createContext<ScrollContextValue>({
 });
 
 export function ScrollProvider({ children }: { children: React.ReactNode }) {
-console.log('ScrollProvider is running');  // This line is new
   const [isScrolled, setIsScrolled] = React.useState(false);
   
   useEffect(() => {

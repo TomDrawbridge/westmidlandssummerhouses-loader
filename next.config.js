@@ -24,6 +24,10 @@ if (fs.existsSync(redirectsFilePath)) {
 const nextConfig = {
   reactStrictMode: false,
 
+  images: {
+    domains: ['cms.westmidlandssummerhouses.com'],
+  },
+
   async redirects() {
     return redirects;
   },
