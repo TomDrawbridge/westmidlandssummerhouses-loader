@@ -9,27 +9,6 @@ export default function Document() {
       </Head>
       <body>
         <Main />
-        <NextScript />
-        
-        {/* Tidio chat auto-open script */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              (function() {
-                function onTidioChatApiReady() {
-                  (function() {
-                      window.tidioChatApi.open();
-                  })();
-                }
-                if (window.tidioChatApi) {
-                  window.tidioChatApi.on("ready", onTidioChatApiReady);
-                } else {
-                  document.addEventListener("tidioChat-ready", onTidioChatApiReady);
-                }
-              })();
-            `,
-          }}
-        />
       </body>
     </Html>
   );
