@@ -9,6 +9,10 @@ module.exports = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        'clash-grotesk': ['var(--font-clash-grotesk)'],
+        'satoshi': ['var(--font-satoshi)'],
+      },
       borderRadius: {
         lg: 'var(--radius)',
         md: 'calc(var(--radius) - 2px)',

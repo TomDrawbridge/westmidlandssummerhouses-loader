@@ -8,9 +8,7 @@ import { ScrollProvider } from "./components/ScrollContext";
 import { registerAll } from '@plasmicpkgs/plasmic-chakra-ui';
 import { Parallax } from "./components/ParallaxText";
 import { initPlasmicLoader } from "@plasmicapp/loader-nextjs";
-import { CaisyRichText } from "./components/Caisy/CaisyRichText";
-import { registerReveal	 } from "./components/react-awesome-reveal";
-import { registerSlider } from "./components/plasmic-keen-slider";
+import { registerSplideSlider } from "./components/SplideRegistration";
 
 import NextScript from "./components/NextScript";
 import { FormUpload } from "./components/uploadCare";
@@ -46,8 +44,6 @@ export const PLASMIC = initPlasmicLoader({
 // Register all components from plasmic-chakra-ui
 registerAll(PLASMIC);
 
-registerReveal(PLASMIC);
-registerSlider(PLASMIC);
 
 PLASMIC.registerGlobalContext(ScrollProvider, {
   name: "ScrollProvider",
