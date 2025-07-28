@@ -1,0 +1,7 @@
+# Modern browsers - excludes Opera Mini and very old versions
+last 2 versions
+> 1%
+not dead
+not op_mini all
+not android < 5
+not ie 11

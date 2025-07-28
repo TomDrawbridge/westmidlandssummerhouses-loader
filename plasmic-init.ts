@@ -10,7 +10,6 @@ import { Parallax } from "./components/ParallaxText";
 import { initPlasmicLoader } from "@plasmicapp/loader-nextjs";
 import { registerSplideSlider } from "./components/SplideRegistration";
 
-import NextScript from "./components/NextScript";
 import { FormUpload } from "./components/uploadCare";
 
 
@@ -82,12 +81,6 @@ className: 'string',
   providesData: true,
 });
 
-PLASMIC.registerComponent(NextScript, {
-  name: "NextScript",
-  props: {
-    src: "string",
-  },
-});
 
 
 import FeatherIcon from "./components/FeatherIcon";
@@ -109,23 +102,6 @@ PLASMIC.registerComponent(ReactMarkdownComponent, {
   props: {
     children: {
       type: "slot",
-    },
-  },
-});
-
-import CustomHead from './components/CustomHead';
-
-PLASMIC.registerComponent(CustomHead, {
-  name: "Head Inject",
-  props: {
-    mycodehere: {
-displayName: "Other Code",
-      type: "code",
-      lang: "html",
-    },
-    measurementId: {
-displayName: "Google Analytics ID",
-      type: "string",
     },
   },
 });
