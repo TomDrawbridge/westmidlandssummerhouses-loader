@@ -27,28 +27,32 @@ if (fs.existsSync(redirectsFilePath)) {
 const nextConfig = {
   reactStrictMode: false,
 
-  // Configure SWC to target modern browsers
-  swcMinify: true,
+  // Configure SWC to target modern browsers and reduce polyfills
   compiler: {
     // Remove unnecessary transforms for modern browsers
     removeConsole: process.env.NODE_ENV === 'production',
   },
 
+  // Experimental features for better performance
   experimental: {
     webVitalsAttribution: ['CLS', 'FCP', 'FID', 'INP', 'LCP', 'TTFB'],
     optimizeCss: true,
+    // Enable modern output for reduced bundle size
+    esmExternals: true,
   },
 
   // Performance optimizations
   poweredByHeader: false,
   compress: true,
   
-  // Bundle optimizations
+  // Bundle optimizations with size limits
   webpack: (config, { dev, isServer }) => {
     // Optimize bundle splitting
     if (!dev && !isServer) {
       config.optimization.splitChunks = {
         ...config.optimization.splitChunks,
+        chunks: 'all',
+        maxSize: 244000, // ~240KB max chunk size
         cacheGroups: {
           ...config.optimization.splitChunks.cacheGroups,
           // Separate vendor chunks for better caching
@@ -57,6 +61,7 @@ const nextConfig = {
             name: 'vendors',
             priority: 10,
             chunks: 'all',
+            maxSize: 244000,
           },
           // Separate Plasmic chunks
           plasmic: {
@@ -64,6 +69,7 @@ const nextConfig = {
             name: 'plasmic',
             priority: 20,
             chunks: 'all',
+            maxSize: 244000,
           },
           // Separate heavy libraries
           charts: {
@@ -71,15 +77,32 @@ const nextConfig = {
             name: 'charts',
             priority: 15,
             chunks: 'all',
+            maxSize: 244000,
           },
         },
       };
+      
+      // Configure for modern browsers to reduce polyfills
+      if (process.env.DISABLE_POLYFILLS === 'true') {
+        config.resolve.alias = {
+          ...config.resolve.alias,
+          // Disable core-js polyfills for modern browsers
+          'core-js': false,
+        };
+      }
     }
     return config;
   },
 
   images: {
-    domains: ['cms.westmidlandssummerhouses.com'],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'cms.westmidlandssummerhouses.com',
+        port: '',
+        pathname: '/**',
+      },
+    ],
     formats: ['image/webp', 'image/avif'],
   },
 

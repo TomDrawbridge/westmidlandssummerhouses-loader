@@ -13,7 +13,6 @@
     font-weight: 300 900; /* Variable font weight range */
   }
 
-
   @tailwind base;
   @tailwind components;
   @tailwind utilities;

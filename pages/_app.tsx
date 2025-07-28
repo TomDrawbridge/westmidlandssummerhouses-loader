@@ -22,11 +22,59 @@ export default function App({ Component, pageProps }: AppProps) {
     // Only run browser check in production
     if (process.env.NODE_ENV !== 'production') return;
     
-    // Updated regex for ES2017+ compatible browsers (matches .browserslistrc)
-    // Chrome 63+, Firefox 55+, Safari 11+, Edge 79+
-    const supportedBrowsers = /Chrome\/(6[3-9]|[7-9]\d|\d{3,})\.[\d.]+|Firefox\/(5[5-9]|[6-9]\d|\d{3,})\.[\d.]+|Safari\/(1[1-9]|[2-9]\d)\.[\d.]+|Edge\/(79|\d{3,})\.[\d.]+/;
+    // More accurate browser detection for truly outdated browsers
+    const isUnsupportedBrowser = () => {
+      const ua = navigator.userAgent;
+      
+      // Check for ES2017+ support features instead of user agent strings
+      try {
+        // Test for ES2017+ features
+        new Function('async () => {}');
+        if (!Array.prototype.includes || !Object.values || !Object.entries) {
+          return true;
+        }
+        
+        // Only show banner for truly ancient browsers
+        // IE 11 and below
+        if (ua.includes('Trident/') || ua.includes('MSIE ')) {
+          return true;
+        }
+        
+        // Very old Chrome (before 60)
+        const chromeMatch = ua.match(/Chrome\/(\d+)/);
+        if (chromeMatch && parseInt(chromeMatch[1]) < 60) {
+          return true;
+        }
+        
+        // Very old Firefox (before 52)
+        const firefoxMatch = ua.match(/Firefox\/(\d+)/);
+        if (firefoxMatch && parseInt(firefoxMatch[1]) < 52) {
+          return true;
+        }
+        
+        // Very old Safari (iOS < 10, macOS Safari < 10)
+        if (ua.includes('Safari/') && !ua.includes('Chrome/')) {
+          // Check iOS version
+          const iosMatch = ua.match(/OS (\d+)_/);
+          if (iosMatch && parseInt(iosMatch[1]) < 10) {
+            return true;
+          }
+          
+          // Check macOS Safari version via WebKit version
+          const webkitMatch = ua.match(/AppleWebKit\/(\d+)/);
+          if (webkitMatch && parseInt(webkitMatch[1]) < 603) {
+            return true;
+          }
+        }
+        
+        return false;
+      } catch (e) {
+        // If we can't even parse modern JavaScript, definitely unsupported
+        return true;
+      }
+    };
     
-    if (!supportedBrowsers.test(navigator.userAgent)) {
+    if (isUnsupportedBrowser()) {
       const banner = document.createElement('div');
       banner.id = 'unsupported-browser-banner';
       banner.innerHTML = `
