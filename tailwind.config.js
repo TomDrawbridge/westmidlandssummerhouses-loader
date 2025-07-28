@@ -12,6 +12,9 @@ module.exports = {
       fontFamily: {
         'clash-grotesk': ['var(--font-clash-grotesk)'],
         'satoshi': ['var(--font-satoshi)'],
+        'inter': ['var(--font-inter)'],
+        'outfit': ['var(--font-outfit)'],
+        'inconsolata': ['var(--font-inconsolata)'],
       },
       borderRadius: {
         lg: 'var(--radius)',

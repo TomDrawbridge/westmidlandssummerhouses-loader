@@ -44,6 +44,7 @@ export default function PlasmicLoaderPage(props: {
       prefetchedQueryData={queryCache}
       pageParams={pageMeta.params}
       pageQuery={router.query}
+      skipFonts={true}
     >
       <Analytics />
       <Head>
@@ -71,6 +72,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
       prefetchedData={plasmicData}
       pageParams={pageMeta.params}
       pageRoute={pageMeta.path}
+      skipFonts={true}
     >
       <PlasmicComponent component={pageMeta.displayName} />
     </PlasmicRootProvider>
