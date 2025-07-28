@@ -1,5 +1,8 @@
 const fs = require('fs');
 const path = require('path');
+const withBundleAnalyzer = require('@next/bundle-analyzer')({
+  enabled: process.env.ANALYZE === 'true',
+})
 
 // Environment variable that specifies the name of the redirects file
 const redirectsFileName = process.env.REDIRECTS_FILE_NAME || 'default';
@@ -32,11 +35,52 @@ const nextConfig = {
   },
 
   experimental: {
-    webVitalsAttribution: ['CLS', 'FCP', 'FID', 'INP', 'LCP', 'TTFB']
+    webVitalsAttribution: ['CLS', 'FCP', 'FID', 'INP', 'LCP', 'TTFB'],
+    optimizeCss: true,
+  },
+
+  // Performance optimizations
+  poweredByHeader: false,
+  compress: true,
+  
+  // Bundle optimizations
+  webpack: (config, { dev, isServer }) => {
+    // Optimize bundle splitting
+    if (!dev && !isServer) {
+      config.optimization.splitChunks = {
+        ...config.optimization.splitChunks,
+        cacheGroups: {
+          ...config.optimization.splitChunks.cacheGroups,
+          // Separate vendor chunks for better caching
+          vendor: {
+            test: /[\\/]node_modules[\\/]/,
+            name: 'vendors',
+            priority: 10,
+            chunks: 'all',
+          },
+          // Separate Plasmic chunks
+          plasmic: {
+            test: /[\\/]node_modules[\\/]@plasmic/,
+            name: 'plasmic',
+            priority: 20,
+            chunks: 'all',
+          },
+          // Separate heavy libraries
+          charts: {
+            test: /[\\/]node_modules[\\/](react-chartjs-2|chart\.js)/,
+            name: 'charts',
+            priority: 15,
+            chunks: 'all',
+          },
+        },
+      };
+    }
+    return config;
   },
 
   images: {
     domains: ['cms.westmidlandssummerhouses.com'],
+    formats: ['image/webp', 'image/avif'],
   },
 
   async redirects() {
@@ -44,4 +88,4 @@ const nextConfig = {
   },
 };
 
-module.exports = nextConfig;
+module.exports = withBundleAnalyzer(nextConfig);

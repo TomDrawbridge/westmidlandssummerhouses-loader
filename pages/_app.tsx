@@ -1,6 +1,6 @@
 import type { AppProps } from 'next/app'
 import { useEffect } from 'react'
-import { clashGrotesk, satoshi, inter, outfit, inconsolata } from '../lib/fonts'
+import { clashGrotesk, satoshi, outfit } from '../lib/fonts'
 import '../styles/globals.css'
 import Script from 'next/script'
 import Head from 'next/head'
@@ -66,7 +66,7 @@ export default function App({ Component, pageProps }: AppProps) {
   const isProduction = process.env.NODE_ENV === 'production';
 
   return (
-    <div className={`${clashGrotesk.variable} ${satoshi.variable} ${inter.variable} ${outfit.variable} ${inconsolata.variable}`}>
+    <div className={`${clashGrotesk.variable} ${satoshi.variable} ${outfit.variable}`}>
       <Head>
         {/* Meta Pixel noscript fallback */}
         <noscript>
@@ -104,7 +104,7 @@ export default function App({ Component, pageProps }: AppProps) {
           {/* Google Tag Manager - Load first as it can manage other tags */}
           <Script
             id="gtm"
-            strategy="afterInteractive"
+            strategy="lazyOnload"
             dangerouslySetInnerHTML={{
               __html: `
                 (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -119,11 +119,11 @@ export default function App({ Component, pageProps }: AppProps) {
           {/* Google Analytics - Only if not managed by GTM */}
           <Script
             src={`https://www.googletagmanager.com/gtag/js?id=${ANALYTICS_CONFIG.GA_ID}`}
-            strategy="afterInteractive"
+            strategy="lazyOnload"
           />
           <Script
             id="google-analytics"
-            strategy="afterInteractive"
+            strategy="lazyOnload"
             dangerouslySetInnerHTML={{
               __html: `
                 window.dataLayer = window.dataLayer || [];
@@ -137,7 +137,7 @@ export default function App({ Component, pageProps }: AppProps) {
           {/* Google Ads Conversion Tracking */}
           <Script
             id="google-ads"
-            strategy="afterInteractive"
+            strategy="lazyOnload"
             dangerouslySetInnerHTML={{
               __html: `
                 gtag('config', '${ANALYTICS_CONFIG.GOOGLE_ADS_ID}');
@@ -148,7 +148,7 @@ export default function App({ Component, pageProps }: AppProps) {
           {/* Meta Pixel */}
           <Script
             id="meta-pixel"
-            strategy="afterInteractive"
+            strategy="lazyOnload"
             dangerouslySetInnerHTML={{
               __html: `
                 !function(f,b,e,v,n,t,s)
@@ -165,10 +165,10 @@ export default function App({ Component, pageProps }: AppProps) {
             }}
           />
 
-          {/* Tidio Chat */}
+          {/* Tidio Chat - Load after user interaction */}
           <Script
             src={`//code.tidio.co/${ANALYTICS_CONFIG.TIDIO_ID}.js`}
-            strategy="afterInteractive"
+            strategy="lazyOnload"
           />
         </>
       )}

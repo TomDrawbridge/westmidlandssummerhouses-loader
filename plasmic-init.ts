@@ -5,12 +5,9 @@ require('dotenv').config()
 
 
 import { ScrollProvider } from "./components/ScrollContext";
-import { registerAll } from '@plasmicpkgs/plasmic-chakra-ui';
 import { Parallax } from "./components/ParallaxText";
 import { initPlasmicLoader } from "@plasmicapp/loader-nextjs";
-import { registerSplideSlider } from "./components/SplideRegistration";
 
-import { FormUpload } from "./components/uploadCare";
 
 
 
@@ -41,7 +38,7 @@ export const PLASMIC = initPlasmicLoader({
 // https://docs.plasmic.app/learn/app-hosting/#set-a-plasmic-project-to-use-your-app-host
 
 // Register all components from plasmic-chakra-ui
-registerAll(PLASMIC);
+
 
 
 PLASMIC.registerGlobalContext(ScrollProvider, {
@@ -50,23 +47,6 @@ PLASMIC.registerGlobalContext(ScrollProvider, {
   props: {},
 });
 
-
-import WhatsAppWidgetComponent from "./components/whats-app-widget";
-
-PLASMIC.registerComponent(WhatsAppWidgetComponent, {
-  name: "WhatsAppWidgetComponent",
-  props: {},
-});
-
-
-
-
-PLASMIC.registerComponent(FormUpload, {
-  name: "FormUpload",
-  props: {},
-  importPath: "@pages/plasmic",
-  importName: "FormUpload"
-})
 
 PLASMIC.registerComponent(Parallax, {
   name: "Parallax",
@@ -79,31 +59,6 @@ className: 'string',
     damping: "number",
   },
   providesData: true,
-});
-
-
-
-import FeatherIcon from "./components/FeatherIcon";
-
-PLASMIC.registerComponent(FeatherIcon, {
-  name: "FeatherIcon",
-  props: {
-    name: 'string',
-    color: 'string',  // use string type for color
-    size: 'string',
-    strokeWidth: 'number',
-  },
-});
-
-import ReactMarkdownComponent from "./components/ReactMarkdown";
-
-PLASMIC.registerComponent(ReactMarkdownComponent, {
-  name: "ReactMarkdown",
-  props: {
-    children: {
-      type: "slot",
-    },
-  },
 });
 
 import FramerMotionComponent from './components/FramerMotionComponent'; 
