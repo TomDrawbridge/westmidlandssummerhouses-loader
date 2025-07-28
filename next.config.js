@@ -24,6 +24,20 @@ if (fs.existsSync(redirectsFilePath)) {
 const nextConfig = {
   reactStrictMode: false,
 
+  // Configure SWC to target modern browsers
+  swcMinify: true,
+  compiler: {
+    // Remove unnecessary transforms for modern browsers
+    removeConsole: process.env.NODE_ENV === 'production',
+  },
+
+  // Configure experimental features
+  experimental: {
+    // Use modern output format
+    legacyBrowsers: false,
+    browsersListForSwc: true,
+  },
+
   images: {
     domains: ['cms.westmidlandssummerhouses.com'],
   },

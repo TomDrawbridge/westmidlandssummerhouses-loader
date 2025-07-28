@@ -19,8 +19,9 @@ export default function App({ Component, pageProps }: AppProps) {
     // Only run browser check in production
     if (process.env.NODE_ENV !== 'production') return;
     
-    // Generate your regex with: npx browserslist-useragent-regexp
-    const supportedBrowsers = /Chrome\/(1[3-9]\d|[2-9]\d\d)\.[\d.]+|Firefox\/(1[4-9]\d|[2-9]\d\d)\.[\d.]+|Safari\/(1[6-9]|[2-9]\d)\.[\d.]+|Edge\/(1[3-9]\d|[2-9]\d\d)\.[\d.]+/;
+    // Updated regex for ES2017+ compatible browsers (matches .browserslistrc)
+    // Chrome 63+, Firefox 55+, Safari 11+, Edge 79+
+    const supportedBrowsers = /Chrome\/(6[3-9]|[7-9]\d|\d{3,})\.[\d.]+|Firefox\/(5[5-9]|[6-9]\d|\d{3,})\.[\d.]+|Safari\/(1[1-9]|[2-9]\d)\.[\d.]+|Edge\/(79|\d{3,})\.[\d.]+/;
     
     if (!supportedBrowsers.test(navigator.userAgent)) {
       const banner = document.createElement('div');

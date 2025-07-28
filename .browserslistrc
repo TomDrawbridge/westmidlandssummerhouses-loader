@@ -1,7 +1,25 @@
-# Modern browsers - excludes Opera Mini and very old versions
-last 2 versions
-> 1%
-not dead
-not op_mini all
-not android < 5
+# Modern browsers only - targeting ES2017+ support
+# This avoids polyfills for Array.prototype.at, flat, flatMap, etc.
+
+# Chrome 63+ (supports all ES2017+ features)
+Chrome >= 63
+
+# Firefox 55+ (supports all ES2017+ features)
+Firefox >= 55
+
+# Safari 11+ (supports all ES2017+ features)
+Safari >= 11
+
+# Edge 79+ (Chromium-based Edge only)
+Edge >= 79
+
+# Exclude older browsers that need polyfills
 not ie 11
+not ie_mob 11
+not android < 63
+not ios_saf < 11
+not safari < 11
+not op_mini all
+
+# Market share threshold for remaining browsers
+> 0.2%
