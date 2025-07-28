@@ -4,6 +4,9 @@ import { clashGrotesk, satoshi, inter, outfit, inconsolata } from '../lib/fonts'
 import '../styles/globals.css'
 import Script from 'next/script'
 import Head from 'next/head'
+import { Analytics } from "@vercel/analytics/next"
+import { SpeedInsights } from "@vercel/speed-insights/next"
+
 
 // Analytics configuration
 const ANALYTICS_CONFIG = {
@@ -76,8 +79,10 @@ export default function App({ Component, pageProps }: AppProps) {
           />
         </noscript>
       </Head>
-
+      
       <Component {...pageProps} />
+<Analytics />
+<SpeedInsights />
 
       {/* Structured Data */}
       <Script 

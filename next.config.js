@@ -31,6 +31,10 @@ const nextConfig = {
     removeConsole: process.env.NODE_ENV === 'production',
   },
 
+  experimental: {
+    webVitalsAttribution: ['CLS', 'FCP', 'FID', 'INP', 'LCP', 'TTFB']
+  },
+
   images: {
     domains: ['cms.westmidlandssummerhouses.com'],
   },
