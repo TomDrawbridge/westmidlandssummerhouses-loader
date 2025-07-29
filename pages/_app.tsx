@@ -152,7 +152,7 @@ export default function App({ Component, pageProps }: AppProps) {
           {/* Google Tag Manager - Load first as it can manage other tags */}
           <Script
             id="gtm"
-            strategy="lazyOnload"
+            strategy="afterInteractive"
             dangerouslySetInnerHTML={{
               __html: `
                 (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -167,11 +167,11 @@ export default function App({ Component, pageProps }: AppProps) {
           {/* Google Analytics - Only if not managed by GTM */}
           <Script
             src={`https://www.googletagmanager.com/gtag/js?id=${ANALYTICS_CONFIG.GA_ID}`}
-            strategy="lazyOnload"
+            strategy="afterInteractive"
           />
           <Script
             id="google-analytics"
-            strategy="lazyOnload"
+            strategy="afterInteractive"
             dangerouslySetInnerHTML={{
               __html: `
                 window.dataLayer = window.dataLayer || [];
@@ -185,7 +185,7 @@ export default function App({ Component, pageProps }: AppProps) {
           {/* Google Ads Conversion Tracking */}
           <Script
             id="google-ads"
-            strategy="lazyOnload"
+            strategy="afterInteractive"
             dangerouslySetInnerHTML={{
               __html: `
                 gtag('config', '${ANALYTICS_CONFIG.GOOGLE_ADS_ID}');
@@ -193,7 +193,7 @@ export default function App({ Component, pageProps }: AppProps) {
             }}
           />
 
-          {/* Meta Pixel */}
+          {/* Meta Pixel - Load after interaction */}
           <Script
             id="meta-pixel"
             strategy="lazyOnload"
@@ -213,10 +213,26 @@ export default function App({ Component, pageProps }: AppProps) {
             }}
           />
 
-          {/* Tidio Chat - Load after user interaction */}
+          {/* Tidio Chat - Load only after user interaction */}
           <Script
-            src={`//code.tidio.co/${ANALYTICS_CONFIG.TIDIO_ID}.js`}
-            strategy="lazyOnload"
+            id="tidio-chat"
+            strategy="worker"
+            onLoad={() => {
+              // Only load after user interaction
+              let interacted = false;
+              const loadTidio = () => {
+                if (!interacted) {
+                  interacted = true;
+                  const script = document.createElement('script');
+                  script.src = `//code.tidio.co/${ANALYTICS_CONFIG.TIDIO_ID}.js`;
+                  script.async = true;
+                  document.head.appendChild(script);
+                }
+              };
+              ['mousedown', 'touchstart', 'keydown', 'scroll'].forEach(event => {
+                document.addEventListener(event, loadTidio, { once: true, passive: true });
+              });
+            }}
           />
         </>
       )}

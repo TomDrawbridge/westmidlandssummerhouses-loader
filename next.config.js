@@ -33,6 +33,9 @@ const nextConfig = {
     removeConsole: process.env.NODE_ENV === 'production',
   },
 
+  // Target modern browsers to reduce polyfills
+  swcMinify: true,
+  
   // Experimental features for better performance
   experimental: {
     webVitalsAttribution: ['CLS', 'FCP', 'FID', 'INP', 'LCP', 'TTFB'],

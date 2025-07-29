@@ -1,25 +1,26 @@
-# Modern browsers only - targeting ES2017+ support
-# This avoids polyfills for Array.prototype.at, flat, flatMap, etc.
+# Very modern browsers only - targeting ES2020+ support
+# This eliminates most polyfills including Array.isArray, flat, flatMap, etc.
 
-# Chrome 63+ (supports all ES2017+ features)
-Chrome >= 63
+# Chrome 80+ (supports ES2020 features)
+Chrome >= 80
 
-# Firefox 55+ (supports all ES2017+ features)
-Firefox >= 55
+# Firefox 75+ (supports ES2020 features)
+Firefox >= 75
 
-# Safari 11+ (supports all ES2017+ features)
-Safari >= 11
+# Safari 13.1+ (supports ES2020 features)
+Safari >= 13.1
 
-# Edge 79+ (Chromium-based Edge only)
-Edge >= 79
+# Edge 80+ (Chromium-based Edge only)
+Edge >= 80
 
 # Exclude older browsers that need polyfills
 not ie 11
 not ie_mob 11
-not android < 63
-not ios_saf < 11
-not safari < 11
+not android < 80
+not ios_saf < 13.4
+not safari < 13.1
 not op_mini all
+not dead
 
 # Market share threshold for remaining browsers
-> 0.2%
+> 0.3%
