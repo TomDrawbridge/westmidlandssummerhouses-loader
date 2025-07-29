@@ -39,6 +39,8 @@ const nextConfig = {
     optimizeCss: true,
     // Enable modern output for reduced bundle size
     esmExternals: true,
+    // Optimize CSS delivery
+    optimizePackageImports: ['lightgallery'],
   },
 
   // Performance optimizations
@@ -71,7 +73,24 @@ const nextConfig = {
             chunks: 'all',
             maxSize: 244000,
           },
-          // Separate heavy libraries
+          // Separate heavy libraries like LightGallery
+          gallery: {
+            test: /[\\/]node_modules[\\/](lightgallery|lg-)/,
+            name: 'gallery',
+            priority: 15,
+            chunks: 'async', // Load LightGallery asynchronously
+            maxSize: 244000,
+          },
+          // Separate CSS files
+          styles: {
+            test: /\.css$/,
+            name: 'styles',
+            priority: 5,
+            chunks: 'all',
+            maxSize: 244000,
+            enforce: true,
+          },
+          // Separate charts
           charts: {
             test: /[\\/]node_modules[\\/](react-chartjs-2|chart\.js)/,
             name: 'charts',
@@ -91,6 +110,7 @@ const nextConfig = {
         };
       }
     }
+    
     return config;
   },
 
