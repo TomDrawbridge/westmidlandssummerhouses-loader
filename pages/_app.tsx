@@ -215,25 +215,45 @@ export default function App({ Component, pageProps }: AppProps) {
 
           {/* Tidio Chat - Load only after user interaction */}
           <Script
-            id="tidio-chat"
-            strategy="worker"
-            onLoad={() => {
-              // Only load after user interaction
-              let interacted = false;
-              const loadTidio = () => {
-                if (!interacted) {
-                  interacted = true;
-                  const script = document.createElement('script');
-                  script.src = `//code.tidio.co/${ANALYTICS_CONFIG.TIDIO_ID}.js`;
-                  script.async = true;
-                  document.head.appendChild(script);
-                }
-              };
-              ['mousedown', 'touchstart', 'keydown', 'scroll'].forEach(event => {
-                document.addEventListener(event, loadTidio, { once: true, passive: true });
-              });
-            }}
-          />
+  id="tidio-chat"
+  strategy="lazyOnload"
+  dangerouslySetInnerHTML={{
+    __html: `
+      (function() {
+        let tidioLoaded = false;
+        
+        function loadTidio() {
+          if (tidioLoaded) return;
+          tidioLoaded = true;
+          
+          var tidioChatAPI = document.createElement("script");
+          tidioChatAPI.src = "//code.tidio.co/${ANALYTICS_CONFIG.TIDIO_ID}.js";
+          tidioChatAPI.async = true;
+          document.head.appendChild(tidioChatAPI);
+        }
+        
+        // Load on first user interaction
+        const events = ['mousedown', 'touchstart', 'keydown', 'scroll'];
+        const handleInteraction = () => {
+          loadTidio();
+          events.forEach(event => {
+            document.removeEventListener(event, handleInteraction);
+          });
+        };
+        
+        events.forEach(event => {
+          document.addEventListener(event, handleInteraction, { 
+            once: true, 
+            passive: true 
+          });
+        });
+        
+        // Fallback: load after 5 seconds if no interaction
+        setTimeout(loadTidio, 5000);
+      })();
+    `
+  }}
+/>
         </>
       )}
     </div>
