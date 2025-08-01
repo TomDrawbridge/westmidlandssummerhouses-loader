@@ -6,7 +6,7 @@ import Script from 'next/script'
 import Head from 'next/head'
 import { Analytics } from "@vercel/analytics/next"
 import { SpeedInsights } from "@vercel/speed-insights/next"
-
+import Tidio from '../components/Tidio' // Import the Tidio component
 
 // Analytics configuration
 const ANALYTICS_CONFIG = {
@@ -21,11 +21,11 @@ export default function App({ Component, pageProps }: AppProps) {
   useEffect(() => {
     // Only run browser check in production
     if (process.env.NODE_ENV !== 'production') return;
-    
+
     // More accurate browser detection for truly outdated browsers
     const isUnsupportedBrowser = () => {
       const ua = navigator.userAgent;
-      
+
       // Check for ES2017+ support features instead of user agent strings
       try {
         // Test for ES2017+ features
@@ -33,25 +33,25 @@ export default function App({ Component, pageProps }: AppProps) {
         if (!Array.prototype.includes || !Object.values || !Object.entries) {
           return true;
         }
-        
+
         // Only show banner for truly ancient browsers
         // IE 11 and below
         if (ua.includes('Trident/') || ua.includes('MSIE ')) {
           return true;
         }
-        
+
         // Very old Chrome (before 60)
         const chromeMatch = ua.match(/Chrome\/(\d+)/);
         if (chromeMatch && parseInt(chromeMatch[1]) < 60) {
           return true;
         }
-        
+
         // Very old Firefox (before 52)
         const firefoxMatch = ua.match(/Firefox\/(\d+)/);
         if (firefoxMatch && parseInt(firefoxMatch[1]) < 52) {
           return true;
         }
-        
+
         // Very old Safari (iOS < 10, macOS Safari < 10)
         if (ua.includes('Safari/') && !ua.includes('Chrome/')) {
           // Check iOS version
@@ -59,21 +59,21 @@ export default function App({ Component, pageProps }: AppProps) {
           if (iosMatch && parseInt(iosMatch[1]) < 10) {
             return true;
           }
-          
+
           // Check macOS Safari version via WebKit version
           const webkitMatch = ua.match(/AppleWebKit\/(\d+)/);
           if (webkitMatch && parseInt(webkitMatch[1]) < 603) {
             return true;
           }
         }
-        
+
         return false;
       } catch (e) {
         // If we can't even parse modern JavaScript, definitely unsupported
         return true;
       }
     };
-    
+
     if (isUnsupportedBrowser()) {
       const banner = document.createElement('div');
       banner.id = 'unsupported-browser-banner';
@@ -104,7 +104,7 @@ export default function App({ Component, pageProps }: AppProps) {
           ">×</button>
         </div>
       `;
-      
+
       document.body.insertBefore(banner, document.body.firstChild);
       document.body.style.paddingTop = '48px';
     }
@@ -116,26 +116,42 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <div className={`${clashGrotesk.variable} ${satoshi.variable} ${outfit.variable}`}>
       <Head>
+        {/* Resource hints for better performance */}
+        <link rel="dns-prefetch" href="//www.google-analytics.com" />
+        <link rel="dns-prefetch" href="//googleads.g.doubleclick.net" />
+        <link rel="preconnect" href="https://www.googletagmanager.com" />
+        <link rel="preconnect" href="https://connect.facebook.net" />
+
         {/* Meta Pixel noscript fallback */}
         <noscript>
-          <img 
-            height="1" 
-            width="1" 
+          <img
+            height="1"
+            width="1"
             style={{ display: 'none' }}
             src={`https://www.facebook.com/tr?id=${ANALYTICS_CONFIG.META_PIXEL_ID}&ev=PageView&noscript=1`}
             alt=""
           />
         </noscript>
       </Head>
-      
+
       <Component {...pageProps} />
-<Analytics />
-<SpeedInsights />
+      <Analytics />
+      <SpeedInsights />
+
+      {/* Tidio Chat Component - much cleaner! */}
+      {isProduction && (
+        <Tidio
+          tidioId={ANALYTICS_CONFIG.TIDIO_ID}
+          loadOnInteraction={true}
+          loadDelay={10000}
+        />
+      )}
 
       {/* Structured Data */}
-      <Script 
-        id="structured-data" 
+      <Script
+        id="structured-data"
         type="application/ld+json"
+        strategy="beforeInteractive"
         dangerouslySetInnerHTML={{
           __html: JSON.stringify({
             "@context": "https://schema.org",
@@ -149,22 +165,24 @@ export default function App({ Component, pageProps }: AppProps) {
 
       {isProduction && (
         <>
-          {/* Google Tag Manager - Load first as it can manage other tags */}
+          {/* Google Tag Manager */}
           <Script
             id="gtm"
+            src={`https://www.googletagmanager.com/gtm.js?id=${ANALYTICS_CONFIG.GTM_ID}`}
             strategy="afterInteractive"
+          />
+          <Script
+            id="gtm-datalayer"
+            strategy="beforeInteractive"
             dangerouslySetInnerHTML={{
               __html: `
-                (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-                new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-                j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-                'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-                })(window,document,'script','dataLayer','${ANALYTICS_CONFIG.GTM_ID}');
+                window.dataLayer = window.dataLayer || [];
+                window.dataLayer.push({'gtm.start': new Date().getTime(), event: 'gtm.js'});
               `
             }}
           />
 
-          {/* Google Analytics - Only if not managed by GTM */}
+          {/* Google Analytics */}
           <Script
             src={`https://www.googletagmanager.com/gtag/js?id=${ANALYTICS_CONFIG.GA_ID}`}
             strategy="afterInteractive"
@@ -178,22 +196,12 @@ export default function App({ Component, pageProps }: AppProps) {
                 function gtag(){dataLayer.push(arguments);}
                 gtag('js', new Date());
                 gtag('config', '${ANALYTICS_CONFIG.GA_ID}');
-              `
-            }}
-          />
-
-          {/* Google Ads Conversion Tracking */}
-          <Script
-            id="google-ads"
-            strategy="afterInteractive"
-            dangerouslySetInnerHTML={{
-              __html: `
                 gtag('config', '${ANALYTICS_CONFIG.GOOGLE_ADS_ID}');
               `
             }}
           />
 
-          {/* Meta Pixel - Load after interaction */}
+          {/* Meta Pixel */}
           <Script
             id="meta-pixel"
             strategy="lazyOnload"
@@ -205,55 +213,18 @@ export default function App({ Component, pageProps }: AppProps) {
                 if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
                 n.queue=[];t=b.createElement(e);t.async=!0;
                 t.src=v;s=b.getElementsByTagName(e)[0];
-                s.parentNode.insertBefore(t,s)}(window, document,'script',
+                s.parentNode.insertBefore(t,s)}(window,document,'script',
                 'https://connect.facebook.net/en_US/fbevents.js');
-                fbq('init', '${ANALYTICS_CONFIG.META_PIXEL_ID}');
-                fbq('track', 'PageView');
+                
+                try {
+                  fbq('init', '${ANALYTICS_CONFIG.META_PIXEL_ID}');
+                  fbq('track', 'PageView');
+                } catch(e) {
+                  console.warn('Meta Pixel failed to load:', e);
+                }
               `
             }}
           />
-
-          {/* Tidio Chat - Load only after user interaction */}
-          <Script
-  id="tidio-chat"
-  strategy="lazyOnload"
-  dangerouslySetInnerHTML={{
-    __html: `
-      (function() {
-        let tidioLoaded = false;
-        
-        function loadTidio() {
-          if (tidioLoaded) return;
-          tidioLoaded = true;
-          
-          var tidioChatAPI = document.createElement("script");
-          tidioChatAPI.src = "//code.tidio.co/${ANALYTICS_CONFIG.TIDIO_ID}.js";
-          tidioChatAPI.async = true;
-          document.head.appendChild(tidioChatAPI);
-        }
-        
-        // Load on first user interaction
-        const events = ['mousedown', 'touchstart', 'keydown', 'scroll'];
-        const handleInteraction = () => {
-          loadTidio();
-          events.forEach(event => {
-            document.removeEventListener(event, handleInteraction);
-          });
-        };
-        
-        events.forEach(event => {
-          document.addEventListener(event, handleInteraction, { 
-            once: true, 
-            passive: true 
-          });
-        });
-        
-        // Fallback: load after 5 seconds if no interaction
-        setTimeout(loadTidio, 5000);
-      })();
-    `
-  }}
-/>
         </>
       )}
     </div>
