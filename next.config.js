@@ -1,6 +1,11 @@
 const fs = require('fs');
 const path = require('path');
 
+// Add bundle analyzer
+const withBundleAnalyzer = require('@next/bundle-analyzer')({
+  enabled: process.env.ANALYZE === 'true',
+});
+
 // Environment variable that specifies the name of the redirects file
 const redirectsFileName = process.env.REDIRECTS_FILE_NAME || 'default';
 const redirectsFilePath = path.join(__dirname, 'utils', 'redirects', `${redirectsFileName}.js`);
@@ -24,6 +29,11 @@ if (fs.existsSync(redirectsFilePath)) {
 const nextConfig = {
   reactStrictMode: false,
 
+  // Turbopack configuration (stable)
+  turbopack: {
+    // Turbopack is now stable in Next.js 15+
+  },
+
   images: {
     domains: ['cms.westmidlandssummerhouses.com'],
   },
@@ -33,4 +43,5 @@ const nextConfig = {
   },
 };
 
-module.exports = nextConfig;
+// Export with bundle analyzer wrapper
+module.exports = withBundleAnalyzer(nextConfig);

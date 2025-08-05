@@ -59,7 +59,7 @@ const generateVideoThumbnail = (videoSrc: string): Promise<string> => {
 
     video.crossOrigin = 'anonymous';
     video.muted = true;
-    
+
     video.onloadedmetadata = () => {
       canvas.width = video.videoWidth;
       canvas.height = video.videoHeight;
@@ -165,7 +165,7 @@ const LightGalleryAdvanced: React.FC<LightGalleryComponentProps> = ({
       >
         {displayItems.map((item, index) => {
           const isVideo = video && index === 0;
-          
+
           const getVideoType = (src: string) => {
             if (src.includes('.webm')) return 'video/webm';
             if (src.includes('.ogg')) return 'video/ogg';
@@ -174,7 +174,7 @@ const LightGalleryAdvanced: React.FC<LightGalleryComponentProps> = ({
           };
 
           const videoType = isVideo ? getVideoType(item.src) : 'video/mp4';
-          
+
           return (
             <a
               key={item.id}
@@ -205,8 +205,8 @@ const LightGalleryAdvanced: React.FC<LightGalleryComponentProps> = ({
                 <div className="video-overlay">
                   <div className="play-button">
                     <svg width="48" height="48" viewBox="0 0 24 24" fill="none">
-                      <circle cx="12" cy="12" r="12" fill="rgba(0,0,0,0.7)"/>
-                      <polygon points="10,8 16,12 10,16" fill="white"/>
+                      <circle cx="12" cy="12" r="12" fill="rgba(0,0,0,0.7)" />
+                      <polygon points="10,8 16,12 10,16" fill="white" />
                     </svg>
                   </div>
                 </div>

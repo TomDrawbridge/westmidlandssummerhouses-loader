@@ -1,11 +1,13 @@
 /** @format */
 
 import 'dotenv/config'
-require('dotenv').config() 
+require('dotenv').config()
 
 
 import { ScrollProvider } from "./components/ScrollContext";
 import { Parallax } from "./components/ParallaxText";
+import VerticalSlider from "./components/VerticalSlider";
+import OptimizedVideo from "./components/OptimizedVideo";
 import { initPlasmicLoader } from "@plasmicapp/loader-nextjs";
 
 
@@ -21,7 +23,7 @@ export const PLASMIC = initPlasmicLoader({
       token: process.env.NEXT_PUBLIC_PLASMIC_TOKEN!,
     },
   ],
- 
+
   // By default Plasmic will use the last published version of your project.
   // For development, you can set preview to true, which will use the unpublished
   // project, allowing you to see your designs without publishing.  Please
@@ -51,8 +53,8 @@ PLASMIC.registerComponent(Parallax, {
   name: "Parallax",
   props: {
     children: "slot",
-className: 'string',
-    from: "number", 
+    className: 'string',
+    from: "number",
     to: "number",
     stiffness: "number",
     damping: "number",
@@ -60,17 +62,123 @@ className: 'string',
   providesData: true,
 });
 
-import FramerMotionComponent from './components/FramerMotionComponent'; 
+PLASMIC.registerComponent(VerticalSlider, {
+  name: "Vertical Slider",
+  props: {
+    children: {
+      type: "slot",
+      allowedComponents: ["text", "img", "video", "div", "span", "p", "h1", "h2", "h3", "h4", "h5", "h6"],
+      description: "Child elements to slide between"
+    },
+    delayTime: {
+      type: "number",
+      defaultValue: 3000,
+      description: "Delay between slides (ms)",
+      helpText: "Time in milliseconds between slide transitions"
+    },
+    animationDuration: {
+      type: "number",
+      defaultValue: 800,
+      description: "Animation duration (ms)",
+      helpText: "Duration of each slide transition in milliseconds"
+    },
+    height: {
+      type: "string",
+      defaultValue: "auto",
+      description: "Height of the slider",
+      helpText: "CSS height value (e.g., '300px', '50vh', '100%') or 'auto' to match first element height"
+    },
+    className: {
+      type: "string",
+      defaultValue: "",
+      description: "Additional CSS classes"
+    }
+  }
+});
+
+PLASMIC.registerComponent(OptimizedVideo, {
+  name: "Optimized Video",
+  props: {
+    src: {
+      type: "string",
+      defaultValue: "",
+      description: "Video URL",
+      helpText: "URL of the video file"
+    },
+    poster: {
+      type: "string",
+      defaultValue: "",
+      description: "Poster image URL",
+      helpText: "Optional poster image URL to display before video loads"
+    },
+    autoPlay: {
+      type: "boolean",
+      defaultValue: true,
+      description: "Auto play",
+      helpText: "Start playing automatically (recommended for header videos)"
+    },
+    loop: {
+      type: "boolean",
+      defaultValue: true,
+      description: "Loop video",
+      helpText: "Loop the video continuously"
+    },
+    muted: {
+      type: "boolean",
+      defaultValue: true,
+      description: "Muted",
+      helpText: "Start muted (required for autoplay)"
+    },
+    controls: {
+      type: "boolean",
+      defaultValue: false,
+      description: "Show controls",
+      helpText: "Show video playback controls"
+    },
+    lazy: {
+      type: "boolean",
+      defaultValue: false,
+      description: "Lazy load",
+      helpText: "Load video only when visible (use for videos below the fold)"
+    },
+    preload: {
+      type: "choice",
+      options: ["none", "metadata", "auto"],
+      defaultValue: "metadata",
+      description: "Preload strategy",
+      helpText: "How much video data to preload"
+    },
+    width: {
+      type: "string",
+      defaultValue: "100%",
+      description: "Width",
+      helpText: "CSS width value"
+    },
+    height: {
+      type: "string",
+      defaultValue: "auto",
+      description: "Height",
+      helpText: "CSS height value"
+    },
+    className: {
+      type: "string",
+      defaultValue: "",
+      description: "CSS classes"
+    }
+  }
+});
+
+import FramerMotionComponent from './components/FramerMotionComponent';
 
 PLASMIC.registerComponent(FramerMotionComponent, {
   name: "Framer Motion",
   isAttachment: true,
   props: {
-  className: "string",
+    className: "string",
     children: 'slot',
-  duration: "number",
-  bounce: "number",
-  delay: "number",
+    duration: "number",
+    bounce: "number",
+    delay: "number",
     initialX: {
       displayName: "Initial X",
       type: "number",
@@ -91,21 +199,21 @@ PLASMIC.registerComponent(FramerMotionComponent, {
       max: 1
     },
 
-},
+  },
 });
 
-import schemaArticle from './components/schema_article'; 
+import schemaArticle from './components/schema_article';
 
 PLASMIC.registerComponent(schemaArticle, {
   name: "Article Schema/Markdown",
   props: {
-      headline: 'string',
-  image: 'string',
-  authorType: 'string',
-  authorName: 'string',
-  publisherName: 'string',
-  publisherLogoUrl: 'string',
-  datePublished: 'string',
+    headline: 'string',
+    image: 'string',
+    authorType: 'string',
+    authorName: 'string',
+    publisherName: 'string',
+    publisherLogoUrl: 'string',
+    datePublished: 'string',
   },
 });
 

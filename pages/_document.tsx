@@ -1,4 +1,5 @@
 import { Html, Head, Main, NextScript } from 'next/document';
+import Script from 'next/script';
 import React from 'react';
 
 export default function Document() {
@@ -42,17 +43,37 @@ export default function Document() {
         {/* Security headers */}
         <meta httpEquiv="Content-Security-Policy" content="upgrade-insecure-requests" />
 
-        {/* Performance hints for Next.js chunks */}
-          <link rel="modulepreload" href="/_next/static/chunks/webpack.js" />
-          <link rel="modulepreload" href="/_next/static/chunks/framework.js" />
-          <link rel="modulepreload" href="/_next/static/chunks/main.js" />
-          <link rel="modulepreload" href="/_next/static/chunks/pages/_app.js" />
+        {/* Structured Data */}
+        <Script
+          id="structured-data"
+          type="application/ld+json"
+          strategy="beforeInteractive"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "WebSite",
+              "name": "West Midlands Summer Houses",
+              "alternateName": "West Midlands Summerhouses",
+              "url": "https://westmidlandssummerhouses.com"
+            })
+          }}
+        />
+
+        {/* GTM DataLayer - must be before GTM script */}
+        <Script
+          id="gtm-datalayer"
+          strategy="beforeInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              window.dataLayer.push({'gtm.start': new Date().getTime(), event: 'gtm.js'});
+            `
+          }}
+        />
+
       </Head>
       <body>
-        {/* Skip to main content for accessibility */}
-        <a href="#main-content" className="sr-only focus-visible">
-          Skip to main content
-        </a>
+
 
         {/* GTM noscript fallback */}
         <noscript>

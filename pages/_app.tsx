@@ -138,29 +138,9 @@ export default function App({ Component, pageProps }: AppProps) {
       <Analytics />
       <SpeedInsights />
 
-      {/* Tidio Chat Component - much cleaner! */}
-      {isProduction && (
-        <Tidio
-          tidioId={ANALYTICS_CONFIG.TIDIO_ID}
-          loadOnInteraction={true}
-          loadDelay={10000}
-        />
-      )}
-
-      {/* Structured Data */}
-      <Script
-        id="structured-data"
-        type="application/ld+json"
-        strategy="beforeInteractive"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "WebSite",
-            "name": "West Midlands Summer Houses",
-            "alternateName": "West Midlands Summerhouses",
-            "url": "https://westmidlandssummerhouses.com"
-          })
-        }}
+      <Tidio
+        tidioId={ANALYTICS_CONFIG.TIDIO_ID}
+        loadStrategy="idle"
       />
 
       {isProduction && (
@@ -170,16 +150,6 @@ export default function App({ Component, pageProps }: AppProps) {
             id="gtm"
             src={`https://www.googletagmanager.com/gtm.js?id=${ANALYTICS_CONFIG.GTM_ID}`}
             strategy="afterInteractive"
-          />
-          <Script
-            id="gtm-datalayer"
-            strategy="beforeInteractive"
-            dangerouslySetInnerHTML={{
-              __html: `
-                window.dataLayer = window.dataLayer || [];
-                window.dataLayer.push({'gtm.start': new Date().getTime(), event: 'gtm.js'});
-              `
-            }}
           />
 
           {/* Google Analytics */}
