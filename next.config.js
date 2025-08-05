@@ -34,6 +34,17 @@ const nextConfig = {
     // Turbopack is now stable in Next.js 15+
   },
 
+  // Styled-jsx configuration for better SSR
+  compiler: {
+    styledJsx: true,
+  },
+
+  // Experimental features for better CSS handling
+  experimental: {
+    optimizeCss: true, // Enable CSS optimization
+    cssChunking: true, // Better CSS chunking
+  },
+
   images: {
     domains: ['cms.westmidlandssummerhouses.com'],
   },

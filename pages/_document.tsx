@@ -36,44 +36,37 @@ export default function Document() {
         {/* <link rel="preload" as="image" href="/images/hero-bg.webp" fetchPriority="high" /> */}
 
         {/* Essential meta tags */}
-        <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
         <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
         <meta name="format-detection" content="telephone=no" />
 
         {/* Security headers */}
         <meta httpEquiv="Content-Security-Policy" content="upgrade-insecure-requests" />
 
-        {/* Structured Data */}
-        <Script
-          id="structured-data"
-          type="application/ld+json"
-          strategy="beforeInteractive"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "WebSite",
-              "name": "West Midlands Summer Houses",
-              "alternateName": "West Midlands Summerhouses",
-              "url": "https://westmidlandssummerhouses.com"
-            })
-          }}
-        />
-
-        {/* GTM DataLayer - must be before GTM script */}
-        <Script
-          id="gtm-datalayer"
-          strategy="beforeInteractive"
-          dangerouslySetInnerHTML={{
-            __html: `
-              window.dataLayer = window.dataLayer || [];
-              window.dataLayer.push({'gtm.start': new Date().getTime(), event: 'gtm.js'});
-            `
-          }}
-        />
 
       </Head>
       <body>
-
+        {/* Show content after styles load */}
+        <Script
+          id="fouc-reveal"
+          strategy="beforeInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+              document.addEventListener('DOMContentLoaded', function() {
+                // Wait for styles to load
+                setTimeout(function() {
+                  document.body.style.visibility = 'visible';
+                  document.body.style.opacity = '1';
+                }, 50);
+              });
+              
+              // Fallback for very slow connections
+              window.addEventListener('load', function() {
+                document.body.style.visibility = 'visible';
+                document.body.style.opacity = '1';
+              });
+            `
+          }}
+        />
 
         {/* GTM noscript fallback */}
         <noscript>

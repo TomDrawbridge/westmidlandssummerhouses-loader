@@ -8,6 +8,7 @@ import { ScrollProvider } from "./components/ScrollContext";
 import { Parallax } from "./components/ParallaxText";
 import VerticalSlider from "./components/VerticalSlider";
 import OptimizedVideo from "./components/OptimizedVideo";
+import YouTube from "./components/youtube";
 import { initPlasmicLoader } from "@plasmicapp/loader-nextjs";
 
 
@@ -322,6 +323,92 @@ PLASMIC.registerComponent(LightGalleryComponent, {
       defaultValue: false,
       description: "Show image captions",
       helpText: "Display captions/filenames when viewing images in the lightbox"
+    }
+  },
+});
+
+PLASMIC.registerComponent(YouTube, {
+  name: "YouTube Player",
+  props: {
+    videoId: {
+      type: "string",
+      defaultValue: "",
+      description: "YouTube Video ID",
+      helpText: "The YouTube video ID (e.g., 'dQw4w9WgXcQ' from https://youtube.com/watch?v=dQw4w9WgXcQ)"
+    },
+    title: {
+      type: "string",
+      defaultValue: "YouTube Video",
+      description: "Video Title",
+      helpText: "Title for accessibility and SEO"
+    },
+    autoplay: {
+      type: "boolean",
+      defaultValue: false,
+      description: "Autoplay",
+      helpText: "Start playing automatically (requires muted for most browsers)"
+    },
+    muted: {
+      type: "boolean",
+      defaultValue: false,
+      description: "Muted",
+      helpText: "Start muted (required for autoplay in most browsers)"
+    },
+    controls: {
+      type: "boolean",
+      defaultValue: true,
+      description: "Show Controls",
+      helpText: "Display YouTube player controls"
+    },
+    loop: {
+      type: "boolean",
+      defaultValue: false,
+      description: "Loop Video",
+      helpText: "Loop the video continuously"
+    },
+    start: {
+      type: "number",
+      defaultValue: undefined,
+      description: "Start Time (seconds)",
+      helpText: "Start playback at specific time in seconds"
+    },
+    end: {
+      type: "number",
+      defaultValue: undefined,
+      description: "End Time (seconds)",
+      helpText: "Stop playback at specific time in seconds"
+    },
+    loadStrategy: {
+      type: "choice",
+      options: ["eager", "interaction", "intersection", "idle"],
+      defaultValue: "intersection",
+      description: "Load Strategy",
+      helpText: "When to load the video: eager (immediately), interaction (on user action), intersection (when visible), idle (when browser is idle)"
+    },
+    aspectRatio: {
+      type: "choice",
+      options: ["16:9", "4:3", "1:1"],
+      defaultValue: "16:9",
+      description: "Aspect Ratio",
+      helpText: "Video aspect ratio"
+    },
+    height: {
+      type: "number",
+      defaultValue: undefined,
+      description: "Height (px)",
+      helpText: "Video height in pixels (width will be auto-calculated based on aspect ratio, or leave empty for responsive)"
+    },
+    priority: {
+      type: "boolean",
+      defaultValue: false,
+      description: "High Priority",
+      helpText: "Load thumbnail with high priority (use for above-the-fold videos)"
+    },
+    className: {
+      type: "string",
+      defaultValue: "",
+      description: "CSS Classes",
+      helpText: "Additional CSS classes"
     }
   },
 });

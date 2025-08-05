@@ -116,6 +116,9 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <div className={`${clashGrotesk.variable} ${satoshi.variable} ${outfit.variable}`}>
       <Head>
+        {/* Essential viewport configuration */}
+        <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+        
         {/* Resource hints for better performance */}
         <link rel="dns-prefetch" href="//www.google-analytics.com" />
         <link rel="dns-prefetch" href="//googleads.g.doubleclick.net" />
