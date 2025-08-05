@@ -6,7 +6,7 @@ export function ScrollProvider({ children }: { children: React.ReactNode }) {
 
   const handleScroll = useCallback(() => {
     const scrolled = window.scrollY > 10; // Small threshold to avoid flickering
-    setIsScrolled(prev => prev !== scrolled ? scrolled : prev);
+    setIsScrolled(scrolled);
   }, []);
 
   useEffect(() => {
