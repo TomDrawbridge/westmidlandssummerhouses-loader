@@ -7,6 +7,7 @@ import Head from 'next/head'
 import { Analytics } from "@vercel/analytics/next"
 import { SpeedInsights } from "@vercel/speed-insights/next"
 import Tidio from '../components/Tidio' // Import the Tidio component
+import NavigationDebugger from '../components/NavigationDebugger'
 
 // Analytics configuration
 const ANALYTICS_CONFIG = {
@@ -140,6 +141,7 @@ export default function App({ Component, pageProps }: AppProps) {
       <Component {...pageProps} />
       <Analytics />
       <SpeedInsights />
+      <NavigationDebugger />
 
       <Tidio
         tidioId={ANALYTICS_CONFIG.TIDIO_ID}
