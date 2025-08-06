@@ -29,6 +29,14 @@ const NavigationDebugger = () => {
 
     const handleRouteChangeComplete = (url: string) => {
       console.log('✅ [ROUTER] Route change completed:', url);
+      console.log('🔍 [DEBUG] Current page state after route change:', {
+        windowLocationHref: window.location.href,
+        windowLocationPathname: window.location.pathname,
+        routerPathname: router.pathname,
+        routerAsPath: router.asPath,
+        documentTitle: document.title,
+        bodyHTML: document.body.innerHTML.substring(0, 500) + '...' // First 500 chars of body
+      });
     };
 
     const handleRouteChangeError = (err: any, url: string) => {
@@ -193,6 +201,26 @@ const NavigationDebugger = () => {
           search: window.location.search,
           hash: window.location.hash
         });
+        
+        // Check for Plasmic components after URL change
+        setTimeout(() => {
+          const plasmicComponents = document.querySelectorAll('[data-plasmic-name], [class*="plasmic"]');
+          console.log('🎨 [PLASMIC] Components found after URL change:', plasmicComponents.length);
+          
+          const plasmicErrors = document.querySelectorAll('.plasmic-error, [data-plasmic-error]');
+          if (plasmicErrors.length > 0) {
+            console.error('❌ [PLASMIC] Error components found:', plasmicErrors);
+          }
+          
+          // Check if the main content area updated
+          const mainContent = document.querySelector('main, [role="main"], .main-content');
+          if (mainContent) {
+            console.log('📄 [CONTENT] Main content area found, innerHTML length:', mainContent.innerHTML.length);
+          } else {
+            console.warn('⚠️ [CONTENT] No main content area found');
+          }
+        }, 100);
+        
         lastUrl = currentUrl;
       }
     };

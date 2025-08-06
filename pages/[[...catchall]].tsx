@@ -24,11 +24,23 @@ export default function PlasmicLoaderPage(props: {
   const { plasmicData, queryCache } = props;
   const router = useRouter();
   
+  // Debug logging
+  console.log('🎯 [PAGE] PlasmicLoaderPage rendering:', {
+    pathname: router.pathname,
+    asPath: router.asPath,
+    query: router.query,
+    hasPlasmicData: !!plasmicData,
+    entryCompMetas: plasmicData?.entryCompMetas?.length || 0,
+    componentName: plasmicData?.entryCompMetas?.[0]?.displayName || 'none'
+  });
+  
   if (!plasmicData || plasmicData.entryCompMetas.length === 0) {
+    console.error('❌ [PAGE] No Plasmic data found, returning 404');
     return <Error statusCode={404} />;
   }
   
   const pageMeta = plasmicData.entryCompMetas[0];
+  console.log('📄 [PAGE] Rendering component:', pageMeta.displayName);
 
   return (
    <>
