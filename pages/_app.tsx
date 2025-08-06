@@ -8,6 +8,8 @@ import { Analytics } from "@vercel/analytics/next"
 import { SpeedInsights } from "@vercel/speed-insights/next"
 import Tidio from '../components/Tidio' // Import the Tidio component
 import NavigationDebugger from '../components/NavigationDebugger'
+import { PlasmicRootProvider } from "@plasmicapp/loader-nextjs"
+import { PLASMIC } from "@/plasmic-init"
 
 // Analytics configuration
 const ANALYTICS_CONFIG = {
@@ -138,15 +140,17 @@ export default function App({ Component, pageProps }: AppProps) {
         </noscript>
       </Head>
 
-      <Component {...pageProps} />
-      <Analytics />
-      <SpeedInsights />
-      <NavigationDebugger />
+      <PlasmicRootProvider loader={PLASMIC}>
+        <Component {...pageProps} />
+        <Analytics />
+        <SpeedInsights />
+        <NavigationDebugger />
 
-      <Tidio
-        tidioId={ANALYTICS_CONFIG.TIDIO_ID}
-        loadStrategy="idle"
-      />
+        <Tidio
+          tidioId={ANALYTICS_CONFIG.TIDIO_ID}
+          loadStrategy="idle"
+        />
+      </PlasmicRootProvider>
 
       {isProduction && (
         <>
