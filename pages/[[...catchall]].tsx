@@ -69,58 +69,91 @@ export default function PlasmicLoaderPage(props: {
 }
 
 export const getStaticProps: GetStaticProps = async (context) => {
+  console.log('🎯 [getStaticProps] Starting for path:', context.params);
+  
   const { catchall } = context.params ?? {};
   const plasmicPath = typeof catchall === 'string' ? catchall : Array.isArray(catchall) ? `/${catchall.join('/')}` : '/';
-  const plasmicData = await PLASMIC.maybeFetchComponentData(plasmicPath);
   
-  if (!plasmicData) {
+  console.log('🎯 [getStaticProps] Plasmic path:', plasmicPath);
+  
+  try {
+    const plasmicData = await PLASMIC.maybeFetchComponentData(plasmicPath);
+    console.log('🎯 [getStaticProps] Plasmic data fetched:', !!plasmicData);
+    
+    if (!plasmicData) {
+      console.log('🎯 [getStaticProps] No Plasmic data found, returning empty props');
+      return { props: {} };
+    }
+    
+    const pageMeta = plasmicData.entryCompMetas[0];
+    console.log('🎯 [getStaticProps] Page component:', pageMeta?.displayName);
+    
+    const queryCache = await extractPlasmicQueryData(
+      <PlasmicRootProvider
+        loader={PLASMIC}
+        prefetchedData={plasmicData}
+        pageParams={pageMeta.params}
+        pageRoute={pageMeta.path}
+        skipFonts={true}
+      >
+        <PlasmicComponent component={pageMeta.displayName} />
+      </PlasmicRootProvider>
+    );
+    
+    console.log('🎯 [getStaticProps] Query cache extracted, returning props');
+    return { props: { plasmicData, queryCache }, revalidate: 3600 };
+  } catch (error) {
+    console.error('❌ [getStaticProps] Error:', error);
     return { props: {} };
   }
-  
-  const pageMeta = plasmicData.entryCompMetas[0];
-  const queryCache = await extractPlasmicQueryData(
-    <PlasmicRootProvider
-      loader={PLASMIC}
-      prefetchedData={plasmicData}
-      pageParams={pageMeta.params}
-      pageRoute={pageMeta.path}
-      skipFonts={true}
-    >
-      <PlasmicComponent component={pageMeta.displayName} />
-    </PlasmicRootProvider>
-  );
-  
-  return { props: { plasmicData, queryCache }, revalidate: 3600 };
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const pageModules = await PLASMIC.fetchPages();
-  const staticPaths = pageModules.map((mod) => ({
-    params: {
-      catchall: mod.path.substring(1).split("/"),
-    },
-  }));
-
-  let dynamicPaths: string[] = [];
-  if (typeof fetchDynamicPaths === 'function') {
-    try {
-      dynamicPaths = await fetchDynamicPaths();
-    } catch (error) {
-      console.error('Error fetching dynamic paths:', error);
-    }
-  }
-
-  const allPaths = [
-    ...staticPaths,
-    ...dynamicPaths.map((path: string) => ({
+  console.log('🛤️ [getStaticPaths] Starting...');
+  
+  try {
+    const pageModules = await PLASMIC.fetchPages();
+    console.log('🛤️ [getStaticPaths] Plasmic pages fetched:', pageModules.length);
+    console.log('🛤️ [getStaticPaths] Plasmic pages:', pageModules.map(mod => mod.path));
+    
+    const staticPaths = pageModules.map((mod) => ({
       params: {
-        catchall: path.substring(1).split("/"),
+        catchall: mod.path.substring(1).split("/"),
       },
-    }))
-  ];
+    }));
 
-  return {
-    paths: allPaths,
-    fallback: "blocking",
-  };
+    let dynamicPaths: string[] = [];
+    if (typeof fetchDynamicPaths === 'function') {
+      try {
+        dynamicPaths = await fetchDynamicPaths();
+        console.log('🛤️ [getStaticPaths] Dynamic paths fetched:', dynamicPaths.length);
+        console.log('🛤️ [getStaticPaths] Dynamic paths:', dynamicPaths);
+      } catch (error) {
+        console.error('❌ [getStaticPaths] Error fetching dynamic paths:', error);
+      }
+    }
+
+    const allPaths = [
+      ...staticPaths,
+      ...dynamicPaths.map((path: string) => ({
+        params: {
+          catchall: path.substring(1).split("/"),
+        },
+      }))
+    ];
+
+    console.log('🛤️ [getStaticPaths] Total paths generated:', allPaths.length);
+    console.log('🛤️ [getStaticPaths] All paths:', allPaths.map(p => '/' + (Array.isArray(p.params.catchall) ? p.params.catchall.join('/') : p.params.catchall)));
+
+    return {
+      paths: allPaths,
+      fallback: "blocking",
+    };
+  } catch (error) {
+    console.error('❌ [getStaticPaths] Error:', error);
+    return {
+      paths: [],
+      fallback: "blocking",
+    };
+  }
 };

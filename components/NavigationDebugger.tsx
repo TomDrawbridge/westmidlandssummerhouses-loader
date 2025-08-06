@@ -41,6 +41,17 @@ const NavigationDebugger = () => {
 
     const handleRouteChangeError = (err: any, url: string) => {
       console.error('❌ [ROUTER] Route change error:', err, 'URL:', url);
+      console.log('🔍 [ERROR] Error details:', {
+        errorMessage: err.message,
+        errorStack: err.stack,
+        targetUrl: url,
+        currentUrl: window.location.href,
+        routerState: {
+          pathname: router.pathname,
+          asPath: router.asPath,
+          isReady: router.isReady
+        }
+      });
     };
 
     const handleBeforeHistoryChange = (url: string) => {
