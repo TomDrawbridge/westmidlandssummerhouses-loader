@@ -3,16 +3,14 @@
 import 'dotenv/config'
 require('dotenv').config()
 
-
 import { ScrollProvider } from "./components/ScrollContext";
-import { Parallax } from "./components/ParallaxText";
-import VerticalSlider from "./components/VerticalSlider";
-import OptimizedVideo from "./components/OptimizedVideo";
-import YouTube from "./components/youtube";
+import { 
+  DynamicParallax as Parallax,
+  DynamicVerticalSlider as VerticalSlider,
+  DynamicOptimizedVideo as OptimizedVideo,
+  DynamicYouTube as YouTube
+} from "./components/DynamicPlasmicComponents";
 import { initPlasmicLoader } from "@plasmicapp/loader-nextjs";
-
-
-
 
 const isDevelopment = process.env.NODE_ENV === 'development';
 console.log("Plasmic preview mode:", isDevelopment);

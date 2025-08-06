@@ -43,6 +43,56 @@ const nextConfig = {
   experimental: {
     optimizeCss: true, // Enable CSS optimization
     cssChunking: true, // Better CSS chunking
+    optimizePackageImports: [
+      '@plasmicapp/loader-nextjs',
+      'framer-motion',
+      'lightgallery',
+      '@vercel/analytics',
+      '@vercel/speed-insights'
+    ], // Optimize package imports for better tree-shaking
+  },
+
+  // Webpack configuration for bundle optimization
+  webpack: (config, { dev, isServer }) => {
+    // Bundle splitting for better caching
+    if (!dev && !isServer) {
+      config.optimization.splitChunks = {
+        ...config.optimization.splitChunks,
+        cacheGroups: {
+          ...config.optimization.splitChunks.cacheGroups,
+          // Separate Plasmic into its own chunk
+          plasmic: {
+            test: /[\\/]node_modules[\\/]@plasmicapp/,
+            name: 'plasmic',
+            chunks: 'all',
+            priority: 30,
+          },
+          // Separate animation libraries
+          animations: {
+            test: /[\\/]node_modules[\\/](framer-motion|@popmotion)/,
+            name: 'animations',
+            chunks: 'all',
+            priority: 25,
+          },
+          // Separate media libraries
+          media: {
+            test: /[\\/]node_modules[\\/](lightgallery|@splidejs)/,
+            name: 'media',
+            chunks: 'all',
+            priority: 25,
+          },
+          // Separate analytics
+          analytics: {
+            test: /[\\/]node_modules[\\/]@vercel[\\/](analytics|speed-insights)/,
+            name: 'analytics',
+            chunks: 'async', // Load these async
+            priority: 20,
+          },
+        },
+      };
+    }
+
+    return config;
   },
 
   images: {

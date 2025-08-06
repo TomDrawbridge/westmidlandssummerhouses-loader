@@ -7,16 +7,13 @@
     "dev:webpack": "next dev",
     "build": "next build",
     "postbuild": "next-sitemap",
-    "analyze": "set ANALYZE=true && yarn build",
+    "analyze": "ANALYZE=true npm run build",
     "start": "next start",
     "lint": "next lint"
   },
   "dependencies": {
     "@formspark/use-formspark": "^0.1.39",
     "@plasmicapp/loader-nextjs": "^1.0.345",
-    "@plasmicpkgs/commerce-shopify": "^0.0.217",
-    "@plasmicpkgs/framer-motion": "^0.0.151",
-    "@plasmicpkgs/react-awesome-reveal": "^3.8.162",
     "@popmotion/popcorn": "^0.4.4",
     "@shopify/shopify-api": "^10.0.0",
     "@splidejs/react-splide": "^0.7.12",

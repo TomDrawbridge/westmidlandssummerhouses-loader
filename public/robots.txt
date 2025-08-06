@@ -3,8 +3,8 @@ User-agent: *
 Allow: /
 
 # Host
-Host: https://example.com
+Host: https://westmidlandssummerhouses.com
 
 # Sitemaps
-Sitemap: https://example.com/sitemap.xml
-Sitemap: undefined/server-sitemap.xml
+Sitemap: https://westmidlandssummerhouses.com/sitemap.xml
+Sitemap: https://westmidlandssummerhouses.com/server-sitemap.xml

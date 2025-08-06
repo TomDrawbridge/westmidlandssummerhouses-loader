@@ -2,23 +2,22 @@ import type { AppProps } from 'next/app'
 import { useEffect } from 'react'
 import { clashGrotesk, satoshi, outfit } from '../lib/fonts'
 import '../styles/globals.css'
-import Script from 'next/script'
 import Head from 'next/head'
-import { Analytics } from "@vercel/analytics/next"
-import { SpeedInsights } from "@vercel/speed-insights/next"
-import Tidio from '../components/Tidio' // Import the Tidio component
-import NavigationDebugger from '../components/NavigationDebugger'
+import dynamic from 'next/dynamic'
 import { PlasmicRootProvider } from "@plasmicapp/loader-nextjs"
 import { PLASMIC } from "@/plasmic-init"
 
-// Analytics configuration
-const ANALYTICS_CONFIG = {
-  GA_ID: 'G-V1CSZ78BJ5',
-  GTM_ID: 'GTM-NC3DBJHL',
-  META_PIXEL_ID: '1009317356826134',
-  GOOGLE_ADS_ID: 'AW-10884204090',
-  TIDIO_ID: 'jf4jq5gvgkplzoligz95ethso5rk59e0'
-}
+// Dynamic imports for heavy components
+const AnalyticsProvider = dynamic(() => import('../components/AnalyticsProvider'), {
+  ssr: false
+});
+
+const NavigationDebugger = dynamic(() => import('../components/NavigationDebugger'), {
+  ssr: false // Debug components don't need SSR
+});
+
+// Analytics configuration - moved to AnalyticsProvider
+const isProduction = process.env.NODE_ENV === 'production';
 
 export default function App({ Component, pageProps }: AppProps) {
   useEffect(() => {
@@ -113,9 +112,6 @@ export default function App({ Component, pageProps }: AppProps) {
     }
   }, []);
 
-  // Only load analytics in production
-  const isProduction = process.env.NODE_ENV === 'production';
-
   return (
     <div className={`${clashGrotesk.variable} ${satoshi.variable} ${outfit.variable}`}>
       <Head>
@@ -134,7 +130,7 @@ export default function App({ Component, pageProps }: AppProps) {
             height="1"
             width="1"
             style={{ display: 'none' }}
-            src={`https://www.facebook.com/tr?id=${ANALYTICS_CONFIG.META_PIXEL_ID}&ev=PageView&noscript=1`}
+            src={`https://www.facebook.com/tr?id=1009317356826134&ev=PageView&noscript=1`}
             alt=""
           />
         </noscript>
@@ -142,70 +138,9 @@ export default function App({ Component, pageProps }: AppProps) {
 
       <PlasmicRootProvider loader={PLASMIC}>
         <Component {...pageProps} />
-        <Analytics />
-        <SpeedInsights />
+        <AnalyticsProvider isProduction={isProduction} />
         <NavigationDebugger />
-
-        <Tidio
-          tidioId={ANALYTICS_CONFIG.TIDIO_ID}
-          loadStrategy="idle"
-        />
       </PlasmicRootProvider>
-
-      {isProduction && (
-        <>
-          {/* Google Tag Manager */}
-          <Script
-            id="gtm"
-            src={`https://www.googletagmanager.com/gtm.js?id=${ANALYTICS_CONFIG.GTM_ID}`}
-            strategy="afterInteractive"
-          />
-
-          {/* Google Analytics */}
-          <Script
-            src={`https://www.googletagmanager.com/gtag/js?id=${ANALYTICS_CONFIG.GA_ID}`}
-            strategy="afterInteractive"
-          />
-          <Script
-            id="google-analytics"
-            strategy="afterInteractive"
-            dangerouslySetInnerHTML={{
-              __html: `
-                window.dataLayer = window.dataLayer || [];
-                function gtag(){dataLayer.push(arguments);}
-                gtag('js', new Date());
-                gtag('config', '${ANALYTICS_CONFIG.GA_ID}');
-                gtag('config', '${ANALYTICS_CONFIG.GOOGLE_ADS_ID}');
-              `
-            }}
-          />
-
-          {/* Meta Pixel */}
-          <Script
-            id="meta-pixel"
-            strategy="lazyOnload"
-            dangerouslySetInnerHTML={{
-              __html: `
-                !function(f,b,e,v,n,t,s)
-                {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-                n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-                if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-                n.queue=[];t=b.createElement(e);t.async=!0;
-                t.src=v;s=b.getElementsByTagName(e)[0];
-                s.parentNode.insertBefore(t,s)}(window,document,'script',
-                'https://connect.facebook.net/en_US/fbevents.js');
-                
-                try {
-                  fbq('init', '${ANALYTICS_CONFIG.META_PIXEL_ID}');
-                  fbq('track', 'PageView');
-                } catch(e) {
-                  console.warn('Meta Pixel failed to load:', e);
-                }
-              `
-            }}
-          />
-        </>
-      )}
     </div>
   )
 }
