@@ -3,10 +3,8 @@ import Script from 'next/script';
 
 // Analytics configuration
 const ANALYTICS_CONFIG = {
-  GA_ID: 'G-V1CSZ78BJ5',
   GTM_ID: 'GTM-NC3DBJHL',
   META_PIXEL_ID: '1009317356826134',
-  GOOGLE_ADS_ID: 'AW-10884204090',
 };
 
 // Dynamic Analytics Components
@@ -61,25 +59,6 @@ export default function AnalyticsProvider({
         id="gtm"
         src={`https://www.googletagmanager.com/gtm.js?id=${ANALYTICS_CONFIG.GTM_ID}`}
         strategy="afterInteractive"
-      />
-
-      {/* Google Analytics */}
-      <Script
-        src={`https://www.googletagmanager.com/gtag/js?id=${ANALYTICS_CONFIG.GA_ID}`}
-        strategy="afterInteractive"
-      />
-      <Script
-        id="google-analytics"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{
-          __html: `
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', '${ANALYTICS_CONFIG.GA_ID}');
-            gtag('config', '${ANALYTICS_CONFIG.GOOGLE_ADS_ID}');
-          `
-        }}
       />
 
       {/* Meta Pixel */}

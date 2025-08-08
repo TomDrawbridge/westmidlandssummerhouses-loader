@@ -12,8 +12,6 @@ export default function Document() {
         <link rel="preconnect" href="https://connect.facebook.net" crossOrigin="anonymous" />
 
         {/* DNS prefetch for less critical resources */}
-        <link rel="dns-prefetch" href="//www.google-analytics.com" />
-        <link rel="dns-prefetch" href="//googleads.g.doubleclick.net" />
         <link rel="dns-prefetch" href="//code.tidio.co" />
 
         {/* Preload critical fonts - these should match your actual font files */}
