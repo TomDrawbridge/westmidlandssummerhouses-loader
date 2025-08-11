@@ -236,7 +236,7 @@ const LightGalleryAdvanced: React.FC<LightGalleryComponentProps> = ({
         
         @media (max-width: 480px) {
           .lightgallery-container :global(.gallery-grid) {
-            grid-template-columns: 1fr !important;
+            grid-template-columns: repeat(3, 1fr) !important;
           }
         }
 
