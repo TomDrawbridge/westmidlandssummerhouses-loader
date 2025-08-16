@@ -15,15 +15,6 @@ export default function Document() {
 
         {/* DNS prefetch for less critical resources */}
         <link rel="dns-prefetch" href="//code.tidio.co" />
-        
-        {/* Google Fonts - non-critical, loaded after initial render */}
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link 
-          rel="stylesheet" 
-          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" 
-          media="print" 
-          onLoad={(e) => { (e.target as HTMLLinkElement).media = 'all'; }}
-        />
 
         {/* Preload critical fonts - these should match your actual font files */}
         <link

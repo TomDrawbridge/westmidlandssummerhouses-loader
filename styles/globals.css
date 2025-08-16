@@ -15,6 +15,9 @@
     font-style: normal;
   }
 
+  /* Import generated Material Icons CSS */
+  @import './material-icons.css';
+
   @tailwind base;
   @tailwind components;
   @tailwind utilities;

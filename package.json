@@ -5,11 +5,13 @@
   "scripts": {
     "dev": "next dev --turbo",
     "dev:webpack": "next dev",
+    "prebuild": "node scripts/generate-icon-types.js",
     "build": "next build",
     "postbuild": "next-sitemap",
     "analyze": "ANALYZE=true npm run build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "generate-icons": "node scripts/generate-icon-types.js"
   },
   "dependencies": {
     "@formspark/use-formspark": "^0.1.39",

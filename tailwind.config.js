@@ -13,8 +13,7 @@ module.exports = {
         'clash-grotesk': ['var(--font-clash-grotesk)'],
         'satoshi': ['var(--font-satoshi)'],
         'inter': ['var(--font-inter)'],
-        'outfit': ['var(--font-outfit)'],
-        'material-symbols-rounded': ['var(--font-material-symbols-rounded)']
+        'outfit': ['var(--font-outfit)']
       },
       borderRadius: {
         lg: 'var(--radius)',
