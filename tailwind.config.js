@@ -14,7 +14,7 @@ module.exports = {
         'satoshi': ['var(--font-satoshi)'],
         'inter': ['var(--font-inter)'],
         'outfit': ['var(--font-outfit)'],
-        'inconsolata': ['var(--font-inconsolata)'],
+        'material-symbols-rounded': ['var(--font-material-symbols-rounded)']
       },
       borderRadius: {
         lg: 'var(--radius)',
