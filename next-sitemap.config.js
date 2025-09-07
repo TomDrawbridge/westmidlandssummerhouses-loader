@@ -9,6 +9,7 @@ const fetchDynamicPaths = allFetchDynamicPaths[`fetchDynamicPaths_${DYNAMIC_PATH
 module.exports = {
   siteUrl: process.env.SITE_URL || 'https://example.com',
   generateRobotsTxt: true,
+  generateIndexSitemap: false,
   
   additionalPaths: async (config) => {
     let dynamicPaths = [];
