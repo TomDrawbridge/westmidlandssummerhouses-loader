@@ -27,7 +27,7 @@ const GardenRoomPlanner: React.FC<GardenRoomPlannerProps> = ({
       style={{
         width: '100%',
         height: '100%',
-        minHeight: '100vh',
+        minHeight: '75vh',
         margin: 0,
         padding: 0,
         overflow: 'hidden'
