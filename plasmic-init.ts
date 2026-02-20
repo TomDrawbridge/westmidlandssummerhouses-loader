@@ -410,3 +410,23 @@ PLASMIC.registerComponent(YouTube, {
     }
   },
 });
+
+import GardenRoomPlanner from './components/GardenRoomPlanner';
+
+PLASMIC.registerComponent(GardenRoomPlanner, {
+  name: "Garden Room Planner",
+  props: {
+    className: {
+      type: "string",
+      defaultValue: "",
+      description: "CSS Classes",
+      helpText: "Additional CSS classes for the container"
+    },
+    appLink: {
+      type: "string",
+      defaultValue: "https://gardenroomplanner.com/editor-app/8422220f-797f-4669-9621-a96b64a3a4db/app.html",
+      description: "App Link",
+      helpText: "The URL for the Garden Room Planner application"
+    }
+  },
+});
